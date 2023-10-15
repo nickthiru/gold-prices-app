@@ -1,6 +1,6 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const { Person } = require("../../src/shouty.js");
-const expect = require("expect");
+const { expect } = require("expect");
 
 Given('Lucy is located {int} metres from Sean', function (distance) {
   this.lucy = new Person
