@@ -1,7 +1,6 @@
 {
   "name": "bdd",
   "version": "0.0.0",
-  "description": "",
   "scripts": {
     "test": "cucumber-js"
   },
