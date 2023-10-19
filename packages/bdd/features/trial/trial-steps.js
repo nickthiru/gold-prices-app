@@ -14,6 +14,5 @@ When('Sean shouts {string}', function (message) {
 });
 
 Then('Lucy hears Sean\'s message', function () {
-  // expect(this.lucy.messagesHeard()).toBe(this.message);
-  expect(true).toBe(true);
+  expect(this.lucy.messagesHeard()).toEqual(expect.arrayContaining([this.message]));
 });
