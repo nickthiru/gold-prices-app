@@ -1,5 +1,7 @@
-const { Stack, Duration } = require('aws-cdk-lib');
-// const sqs = require('aws-cdk-lib/aws-sqs');
+const { Stack } = require('aws-cdk-lib');
+const { LambdaStack } = require('./lambda-stack');
+const { ApiStack } = require('./api-stack');
+const { LayerStack } = require('./layer-stack');
 
 class BackendStack extends Stack {
   /**
@@ -11,12 +13,15 @@ class BackendStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const layerStack = new LayerStack(this, "LayerStack");
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'BackendQueue', {
-    //   visibilityTimeout: Duration.seconds(300)
-    // });
+    const lambdaStack = new LambdaStack(this, "LambdaStack", {
+      // webScraperLayer: layerStack.webScraperLayer
+    });
+
+    new ApiStack(this, "ApiStack", {
+      pricesApi_LambdaIntegration: lambdaStack.pricesApi_LambdaIntegration
+    })
   }
 }
 
