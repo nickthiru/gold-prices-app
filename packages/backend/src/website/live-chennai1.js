@@ -1,7 +1,6 @@
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
 
-
 exports.handler = async function (event, context) {
   console.log("(+) event: \n" + JSON.stringify(event, null, 2));
 
@@ -30,6 +29,11 @@ exports.handler = async function (event, context) {
     console.log("(+) result:\n" + JSON.stringify(result, null, 2));
 
     await browser.close();
+
+    return {
+      statusCode: 200,
+      message: "price fetched"
+    };
 
   } catch (error) {
     console.log("(-) error: \n" + error);

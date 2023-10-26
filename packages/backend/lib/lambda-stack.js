@@ -1,4 +1,4 @@
-const { Stack, Duration } = require("aws-cdk-lib");
+const { Stack } = require("aws-cdk-lib");
 const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 const path = require("path");
@@ -18,20 +18,6 @@ class LambdaStack extends Stack {
     });
 
     this.pricesApi_LambdaIntegration = new LambdaIntegration(pricesApi_Lambda);
-
-
-    const temp_Lambda = new NodejsFunction(this, "temp_Lambda", {
-      bundling: {
-        externalModules: ["@aws-sdk"],
-        nodeModules: ["@sparticuz/chromium"]
-      },
-      runtime: Runtime.NODEJS_18_X,
-      memorySize: 1024,
-      timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, "../src/prices/temp.js")),
-      handler: "handler",
-      depsLockFilePath: (path.join(__dirname, packageLockJsonFile))
-    });
   }
 }
 

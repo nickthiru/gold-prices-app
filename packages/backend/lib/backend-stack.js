@@ -1,7 +1,8 @@
 const { Stack } = require('aws-cdk-lib');
 const { LambdaStack } = require('./lambda-stack');
 const { ApiStack } = require('./api-stack');
-const { LayerStack } = require('./layer-stack');
+const { WebsiteStack } = require('./website-stack');
+const { DataStack } = require('./data-stack');
 
 class BackendStack extends Stack {
   /**
@@ -13,7 +14,9 @@ class BackendStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    // const layerStack = new LayerStack(this, "LayerStack");
+    const dataStack = new DataStack(this, "DataStack");
+
+    new WebsiteStack(this, "WebsiteStack");
 
     const lambdaStack = new LambdaStack(this, "LambdaStack", {
       // webScraperLayer: layerStack.webScraperLayer
