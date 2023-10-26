@@ -13,7 +13,7 @@ class BackendStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const layerStack = new LayerStack(this, "LayerStack");
+    // const layerStack = new LayerStack(this, "LayerStack");
 
     const lambdaStack = new LambdaStack(this, "LambdaStack", {
       // webScraperLayer: layerStack.webScraperLayer
