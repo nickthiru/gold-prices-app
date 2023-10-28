@@ -12,7 +12,7 @@ class LambdaStack extends Stack {
 
     const pricesApi_Lambda = new NodejsFunction(this, "PricesApi_Lambda", {
       runtime: Runtime.NODEJS_18_X,
-      entry: (path.join(__dirname, "../src/prices/api-handler.js")),
+      entry: (path.join(__dirname, "../src/api/rest/api-handler.js")),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile))
     });

@@ -4,26 +4,17 @@ const { marshall } = require("@aws-sdk/util-dynamodb");
 async function saveData(ddbClient, tableName, dataToSave) {
   console.log("(+) Inside 'saveData()'");
   // console.log("(+) tableName: " + tableName);
-  // console.log("(+) dataToSave: \n" + JSON.stringify(dataToSave, null, 2));
-
-  const item = {
-    siteName: dataToSave.siteName,
-    goldKarat: dataToSave.goldKarat,
-    currency: dataToSave.currency,
-    date: dataToSave.date,
-    lastUpdatedTime: dataToSave.lastUpdatedTime,
-    goldPrice: dataToSave.goldPrice
-  };
-
-  console.log("(+) item: \n" + JSON.stringify(item, null, 2));
+  console.log("(+) dataToSave: \n" + JSON.stringify(dataToSave, null, 2));
 
   try {
+    console.log("(+) Saving to DDB...");
+
     const result = await ddbClient.send(new PutItemCommand({
       TableName: tableName,
-      Item: marshall(item)
+      Item: marshall(dataToSave)
     }));
 
-    console.log("(+) result: " + JSON.stringify(result));
+    console.log("(+) result: \n" + JSON.stringify(result, null, 2));
 
     return {
       statusCode: 201,
