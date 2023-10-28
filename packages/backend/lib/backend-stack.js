@@ -16,11 +16,12 @@ class BackendStack extends Stack {
 
     const dataStack = new DataStack(this, "DataStack");
 
-    new WebsiteStack(this, "WebsiteStack");
-
-    const lambdaStack = new LambdaStack(this, "LambdaStack", {
-      // webScraperLayer: layerStack.webScraperLayer
+    new WebsiteStack(this, "WebsiteStack", {
+      tableArn: dataStack.websiteTable.tableArn,
+      tableName: dataStack.websiteTable.tableName
     });
+
+    const lambdaStack = new LambdaStack(this, "LambdaStack");
 
     new ApiStack(this, "ApiStack", {
       pricesApi_LambdaIntegration: lambdaStack.pricesApi_LambdaIntegration

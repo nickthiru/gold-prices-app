@@ -1,0 +1,12 @@
+{
+  "BackendStackDataStackE94D765A": {
+    "ExportsOutputFnGetAttWebsiteTableF4B2AB07Arn08047D9E": "arn:aws:dynamodb:us-east-1:346761569124:table/BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-157HIYJP4DW7B",
+    "ExportsOutputRefWebsiteTableF4B2AB077CB0268F": "BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-157HIYJP4DW7B"
+  },
+  "BackendStackLambdaStackF7DE59B6": {
+    "ExportsOutputFnGetAttPricesApiLambdaC3231A6CArn52372566": "arn:aws:lambda:us-east-1:346761569124:function:BackendStackLambdaStackF7D-PricesApiLambdaC3231A6C-kJzeEI0GoFfE"
+  },
+  "BackendStackApiStack96B9424F": {
+    "RestApiEndpoint0551178A": "https://e4d4pfsbu9.execute-api.us-east-1.amazonaws.com/prod/"
+  }
+}

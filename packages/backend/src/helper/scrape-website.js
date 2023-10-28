@@ -1,7 +1,12 @@
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
 
-async function scrapeWebsite(site) {
+async function scrapeWebsite(
+  url,
+  dateCssSelector,
+  lastUpdatedTimeCssSelector,
+  goldPriceCssSelector
+) {
   // console.log("(+) Inside scrapeData()")
   // console.log("(+) site: \n" + JSON.stringify(site));
 
@@ -16,21 +21,28 @@ async function scrapeWebsite(site) {
 
     const page = await browser.newPage();
 
-    await page.goto(site.url, {
+    await page.goto(url, {
       waitUntil: "domcontentloaded"
     });
 
-    const result = await page.evaluate((site) => {
+    const result = await page.evaluate((
+      dateCssSelector,
+      lastUpdatedTimeCssSelector,
+      goldPriceCssSelector
+    ) => {
       console.log("(+) Inside page.evaluate()");
 
-      const lastUpdated = document.querySelector(site.lastUpdatedCssSelector).innerText;
-      const goldPrice = document.querySelector(site.goldPriceCssSelector).innerText;
+      const date = document.querySelector(dateCssSelector).innerText;
+      const lastUpdatedTime = document.querySelector(lastUpdatedTimeCssSelector).innerText;
+      const goldPrice = document.querySelector(goldPriceCssSelector).innerText;
 
       return {
-        lastUpdated: lastUpdated,
-        goldPrice: goldPrice
+        date,
+        lastUpdatedTime,
+        goldPrice
       };
-    }, site);
+
+    }, dateCssSelector, lastUpdatedTimeCssSelector, goldPriceCssSelector);
 
     // console.log("(+) scrapeData() result:\n" + JSON.stringify(result, null, 2));
 

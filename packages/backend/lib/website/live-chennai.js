@@ -3,6 +3,7 @@ const { Duration } = require("aws-cdk-lib");
 const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 const path = require("path");
+const { PolicyStatement, Effect } = require("aws-cdk-lib/aws-iam");
 
 const packageLockJsonFile = "../../../../package-lock.json";
 
@@ -10,7 +11,13 @@ class LiveChennai extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    new NodejsFunction(this, "Lambda", {
+    console.log("(+) Inside 'LiveChennai' construct");
+
+    const { tableArn, tableName } = props;
+    // console.log("(+) tableArn: " + tableArn);
+    // console.log("(+) tableName: " + tableName);
+
+    const lambda = new NodejsFunction(this, "Lambda", {
       bundling: {
         externalModules: ["@aws-sdk"],
         nodeModules: ["@sparticuz/chromium"]
@@ -20,8 +27,21 @@ class LiveChennai extends Construct {
       timeout: Duration.seconds(30),
       entry: (path.join(__dirname, "../../src/website/live-chennai.js")),
       handler: "handler",
-      depsLockFilePath: (path.join(__dirname, packageLockJsonFile))
+      depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
+      environment: { tableName }
     });
+
+    lambda.addToRolePolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      resources: [tableArn],
+      actions: [
+        "dynamodb:PutItem",
+        // "dynamobd:Scan",
+        // "dynamobd:GetItem",
+        // "dynamobd:UpdateItem",
+        // "dynamobd:DeleteItem"
+      ]
+    }));
   };
 }
 
