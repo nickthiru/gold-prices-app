@@ -2,8 +2,10 @@ const { Construct } = require("constructs");
 const { Duration } = require("aws-cdk-lib");
 const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
-const path = require("path");
 const { PolicyStatement, Effect } = require("aws-cdk-lib/aws-iam");
+const { EventbridgeToLambda } = require("@aws-solutions-constructs/aws-eventbridge-lambda");
+const { Schedule } = require("aws-cdk-lib/aws-events");
+const path = require("path");
 
 const packageLockJsonFile = "../../../../package-lock.json";
 
@@ -42,6 +44,13 @@ class LiveChennai extends Construct {
         // "dynamobd:DeleteItem"
       ]
     }));
+
+    new EventbridgeToLambda(this, "LiveChennai_EventbridgeToLambda", {
+      existingLambdaObj: lambda,
+      eventRuleProps: {
+        schedule: Schedule.rate(Duration.hours(1))
+      }
+    })
   };
 }
 
