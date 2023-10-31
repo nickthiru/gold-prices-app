@@ -19,7 +19,7 @@ exports.handler = async function (event, context) {
   const goldPriceCssSelector = "body > div.wrapper > div.veg-cointainer > table:nth-child(8) > tbody > tr > td > div.col-sm-8 > table > tbody > tr:nth-child(3) > td:nth-child(4) > font";
   const goldKarat = "22";
   const currency = "INR";
-  const utcOffset = "+0800";
+  const utcOffset = "+0530";
   const timezone = "IST"
 
   try {

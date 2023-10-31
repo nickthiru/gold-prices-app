@@ -27,7 +27,7 @@ class LiveChennai extends Construct {
       runtime: Runtime.NODEJS_18_X,
       memorySize: 1024,
       timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, "../../src/website/live-chennai/live-chennai.js")),
+      entry: (path.join(__dirname, "../../src/website/live-chennai/handler.js")),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: { tableName }
