@@ -1,3 +1,7 @@
+// This version is different to the current, main one because it uses a test i.e. if condition, to see
+// if the website's data i.e. gold price has been updated. This conditional statement has
+// been removed from the current, main version.
+
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
 const { cleanData } = require("../website/live-chennai/clean-data");

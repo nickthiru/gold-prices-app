@@ -3,10 +3,9 @@ const chromium = require("@sparticuz/chromium");
 
 async function scrapeWebsite(
   url,
-  goldPriceCssSelector,
-  dateTimeCssSelector,
   dateCssSelector,
-  timeCssSelector
+  lastUpdatedTimeCssSelector,
+  goldPriceCssSelector,
 ) {
   console.log("(+) Inside scrapeWebsite()");
 
@@ -26,45 +25,38 @@ async function scrapeWebsite(
     });
 
     const result = await page.evaluate((
-      goldPriceCssSelector,
-      dateTimeCssSelector,
       dateCssSelector,
-      timeCssSelector
+      lastUpdatedTimeCssSelector,
+      goldPriceCssSelector,
     ) => {
       console.log("(+) Inside page.evaluate()");
 
-      let rawGoldPrice, rawDateTime, rawDate, rawTime;
-
-      rawGoldPrice = document.querySelector(goldPriceCssSelector).innerText;
-
-      if (dateTimeCssSelector) rawDateTime = document.querySelector(dateTimeCssSelector).innerText;
-
-      if (dateCssSelector) rawDate = document.querySelector(dateCssSelector).innerText;
-
-      if (timeCssSelector) rawTime = document.querySelector(timeCssSelector).innerText;
+      const rawDate = document.querySelector(dateCssSelector).innerText;
+      const rawLastUpdatedTime = document.querySelector(lastUpdatedTimeCssSelector).innerText;
+      const rawGoldPrice = document.querySelector(goldPriceCssSelector).innerText;
 
       // Add timestamp to inform time of capture
       const scrapeDateInUTC = new Date().toISOString();
 
       return {
-        rawGoldPrice: rawGoldPrice,
-        rawDateTime: rawDateTime,
-        rawDate: rawDate,
-        rawTime: rawTime,
-        scrapeDateInUTC: scrapeDateInUTC
+        rawDate,
+        rawLastUpdatedTime,
+        rawGoldPrice,
+        scrapeDateInUTC
       };
     },
-      goldPriceCssSelector,
-      dateTimeCssSelector,
       dateCssSelector,
-      timeCssSelector
+      lastUpdatedTimeCssSelector,
+      goldPriceCssSelector
     );
 
     console.log("(+) scrapeWebsite() result:\n" + JSON.stringify(result, null, 2));
+    console.log("(+) typeof result:\n" + (typeof result));
 
     // await browser.close();   // This is causing lambda to hang and timeout.
 
     return result;
+    // return JSON.stringify(result);
 
   } catch (error) {
     console.log("(-) Error: \n" + error);

@@ -13,37 +13,47 @@ exports.handler = async function (event, context) {
   const tableName = process.env.tableName;
 
   const siteName = "Live Chennai";
-  const url = "https://www.livechennai.com/gold_silverrate.asp";
-  const dateCssSelector = "body > div.wrapper > div.veg-cointainer > table:nth-child(8) > tbody > tr > td > div.col-sm-8 > table > tbody > tr:nth-child(3) > td:nth-child(1) > font";
-  const lastUpdatedTimeCssSelector = ".mob-cont[align='right']";
-  const goldPriceCssSelector = "body > div.wrapper > div.veg-cointainer > table:nth-child(8) > tbody > tr > td > div.col-sm-8 > table > tbody > tr:nth-child(3) > td:nth-child(4) > font";
+
   const goldKarat = "22";
   const currency = "INR";
   const utcOffset = "+0530";
   const timezone = "IST"
 
+  const url = "https://www.livechennai.com/gold_silverrate.asp";
+  const goldPriceCssSelector = "body > div.wrapper > div.veg-cointainer > table:nth-child(8) > tbody > tr > td > div.col-sm-8 > table > tbody > tr:nth-child(3) > td:nth-child(4) > font";
+
+  const dateTimeCssSelector = "";
+  const dateCssSelector = "body > div.wrapper > div.veg-cointainer > table:nth-child(8) > tbody > tr > td > div.col-sm-8 > table > tbody > tr:nth-child(3) > td:nth-child(1) > font";
+  const timeCssSelector = ".mob-cont[align='right']";
+
+
+
   try {
     const {
+      rawDateTime,
       rawDate,
-      rawLastUpdatedTime,
+      rawTime,
       rawGoldPrice,
       scrapeDateInUTC
     } = await scrapeWebsite(
       url,
-      dateCssSelector,
-      lastUpdatedTimeCssSelector,
       goldPriceCssSelector,
+      dateTimeCssSelector,
+      dateCssSelector,
+      timeCssSelector
     );
 
     console.log("(+) Back in 'Live Chennai' handler");
+    console.log("(+) rawDateTime: " + rawDateTime);
     console.log("(+) rawDate: " + rawDate);
-    console.log("(+) rawLastUpdatedTime: " + rawLastUpdatedTime);
+    console.log("(+) rawTime: " + rawTime);
     console.log("(+) rawGoldPrice: " + rawGoldPrice);
     console.log("(+) scrapeDateInUTC: " + scrapeDateInUTC);
 
     const { dateTime, goldPrice } = cleanData(
+      rawDateTime,
       rawDate,
-      rawLastUpdatedTime,
+      rawTime,
       rawGoldPrice
     );
 
@@ -63,7 +73,7 @@ exports.handler = async function (event, context) {
 
     console.log("(+) dataToSave: \n" + JSON.stringify(dataToSave, null, 2));
 
-    await saveData(ddbClient, tableName, dataToSave);
+    // await saveData(ddbClient, tableName, dataToSave);
 
   } catch (error) {
     console.log("(-) Error: " + error);
