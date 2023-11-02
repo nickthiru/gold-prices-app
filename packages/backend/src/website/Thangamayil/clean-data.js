@@ -1,114 +1,84 @@
-// Live Chennai website data cleaner
+// Thangamayil website data cleaner
 
-function cleanData(rawDate, rawLastUpdatedTime, rawGoldPrice) {
+// Website date-time is displayed as: "Last updated on : 01/11/23 11:00 AM"
+// Website gold price is displayed as: "₹5640"
+
+function cleanData(rawDateTime, rawGoldPrice) {
   console.log("(+) Inside cleanData()");
-  console.log("(+) rawDate: " + rawDate);
-  console.log("(+) rawLastUpdatedTime: " + rawLastUpdatedTime);
+  console.log("(+) rawDateTime: " + rawDateTime);
   console.log("(+) rawGoldPrice: " + rawGoldPrice);
 
+  const cleanedDateTime = cleanRawDateTime(rawDateTime);
+  console.log("(+) cleanedDateTime: " + cleanedDateTime);
 
-  const cleanedTime = cleanTime(rawLastUpdatedTime);
-  console.log("(+) cleanedTime: " + cleanedTime);
-
-  const cleanedDate = cleanDate(rawDate);
-  console.log("(+) cleanedDate (module): " + cleanedDate);
-
-  const cleanedGoldPrice = cleanGoldPrice(rawGoldPrice);
-  console.log("(+) typeof cleanedGoldPrice: " + (typeof cleanedGoldPrice));
+  const cleanedGoldPrice = cleanRawGoldPrice(rawGoldPrice);
+  console.log("(+) cleanedGoldPrice: " + cleanedGoldPrice);
 
   return {
-    dateTime: cleanedDate + cleanedTime,
+    dateTime: cleanedDateTime,
     goldPrice: cleanedGoldPrice
   };
 }
 
-function cleanDate(date) {
-  const splitDate = date.split("/");
+function cleanRawDateTime(rawDateTime) {
 
-  const year = splitDate[2];
+  const slicedDate = rawDateTime.slice(18, 26);
+  // console.log("(+) slicedDate: " + "#" + slicedDate + "#");
 
-  let month = splitDate[1].toLowerCase();
+  const slicedTime = rawDateTime.slice(27);
+  // console.log("(+) slicedTime: " + "#" + slicedTime + "#");
 
-  switch (month) {
-    case "january":
-      month = "01";
-      break;
-    case "february":
-      month = "02";
-      break;
-    case "march":
-      month = "03";
-      break;
-    case "april":
-      month = "04";
-      break;
-    case "may":
-      month = "05";
-      break;
-    case "june":
-      month = "06";
-      break;
-    case "july":
-      month = "07";
-      break;
-    case "august":
-      month = "08";
-      break;
-    case "september":
-      month = "09";
-      break;
-    case "october":
-      month = "10";
-      break;
-    case "november":
-      month = "11";
-      break;
-    case "december":
-      month = "12";
-      break;
-    default:
-      console.log("No matching month");
-      break;
-  };
+  const cleanedDate = cleanDate(slicedDate);
+  // console.log("cleanedDate: " + cleanedDate);
 
-  const day = splitDate[0];
+  const cleanedTime = cleanTime(slicedTime);
+  // console.log("cleanedTime: " + cleanedTime);
+
+  return cleanedDate + cleanedTime;
+}
+
+function cleanDate(slicedDate) {
+  const splitDate = slicedDate.split("/");
+
+  let year = "20" + splitDate[2];
+  // console.log("(+) year: " + "#" + year + "#");
+
+  let month = splitDate[1];
+  // console.log("(+) month: " + "#" + month + "#");
+
+  let day = splitDate[0];
+  // console.log("(+) day: " + "#" + day + "#");
 
   return year + "-" + month + "-" + day;
 }
 
-function cleanTime(time) {
-  const splitTime = time.split(":");
-  // console.log("splitTime: " + splitTime);
+function cleanTime(slicedTime) {
+  // console.log("(+) slicedTime: " + slicedTime);
 
-  const ampm = splitTime[3].slice(-2)
-  // console.log("ampm: " + ampm);
+  var hours = "";
 
-  let hours = splitTime[1];
+  const slicedHours = slicedTime.slice(0, 2);
+  // console.log("(+) slicedHours: " + slicedHours);
 
-  // console.log("hours (before): " + hours);
+  const slicedMinutes = slicedTime.slice(3, 5);
+  // console.log("(+) slicedMinutes: " + slicedMinutes);
 
-  // console.log("hours > 12? " + (Number(hours) > 11));
+  const ampm = slicedTime.slice(-3).trimStart();
+  // console.log("(+) ampm: " + ampm);
 
-  if (ampm === "AM" && (Number(hours) > 11)) throw new Error("Time format is supposed to be in the 12-hour format");
+  (ampm === "PM") ? hours = String(Number(slicedHours) + 12) : hours = slicedHours;
+  // console.log("(+) hours: " + hours);
 
-  if (ampm === "PM") hours = Number(hours) + 12;
-
-  if (ampm === "AM" && hours.length !== 2) hours = "0" + hours;
-
-  // console.log("hours (after): " + hours);
-
-  const minutes = splitTime[2];
-  // console.log("minutes: " + minutes);
-
-  const seconds = splitTime[3].slice(0, 2);
-  // console.log("seconds: " + seconds);
-
-  return "T" + hours + ":" + minutes + ":" + seconds + ".000Z";
-  // console.log("(+) cleanedTime: " + cleanedTime);
+  return "T" + hours + ":" + slicedMinutes + ":" + "00" + ".000Z";
 }
 
-function cleanGoldPrice(rawGoldPrice) {
-  return Number(rawGoldPrice);
+function cleanRawGoldPrice(rawGoldPrice) {
+  // console.log("(+) rawGoldPrice: " + rawGoldPrice);
+
+  const cleanedGoldPrice = rawGoldPrice.slice(1);
+  // console.log("(+) cleanedGoldPrice: " + cleanedGoldPrice);
+
+  return Number(cleanedGoldPrice);
 }
 
 module.exports = { cleanData };

@@ -1,25 +1,25 @@
 // Live Chennai website data cleaner
 
-function cleanData(
-  rawDateTime,
-  rawDate,
-  rawTime,
-  rawGoldPrice) {
+// Website date is displayed as: "28/October/2023"
+// Website time is displayed as: "LAST UPDATE TIME:9:52:15 AM"
+// Website gold price is displayed as: "5640"
 
+function cleanData(rawDate, rawTime, rawGoldPrice) {
   console.log("(+) Inside cleanData()");
   console.log("(+) rawDate: " + rawDate);
-  console.log("(+) rawLastUpdatedTime: " + rawLastUpdatedTime);
+  console.log("(+) rawTime: " + rawTime);
   console.log("(+) rawGoldPrice: " + rawGoldPrice);
 
 
-  const cleanedTime = cleanTime(rawLastUpdatedTime);
+  const cleanedTime = cleanRawTime(rawTime);
   console.log("(+) cleanedTime: " + cleanedTime);
 
-  const cleanedDate = cleanDate(rawDate);
-  console.log("(+) cleanedDate (module): " + cleanedDate);
+  const cleanedDate = cleanRawDate(rawDate);
+  console.log("(+) cleanedDate: " + cleanedDate);
 
-  const cleanedGoldPrice = cleanGoldPrice(rawGoldPrice);
-  console.log("(+) typeof cleanedGoldPrice: " + (typeof cleanedGoldPrice));
+  const cleanedGoldPrice = cleanRawGoldPrice(rawGoldPrice);
+  console.log("(+) cleanedGoldPrice: " + cleanedGoldPrice);
+
 
   return {
     dateTime: cleanedDate + cleanedTime,
@@ -27,8 +27,8 @@ function cleanData(
   };
 }
 
-function cleanDate(date) {
-  const splitDate = date.split("/");
+function cleanRawDate(rawDate) {
+  const splitDate = rawDate.split("/");
 
   const year = splitDate[2];
 
@@ -81,7 +81,7 @@ function cleanDate(date) {
   return year + "-" + month + "-" + day;
 }
 
-function cleanTime(time) {
+function cleanRawTime(time) {
   const splitTime = time.split(":");
   // console.log("splitTime: " + splitTime);
 
@@ -112,7 +112,7 @@ function cleanTime(time) {
   // console.log("(+) cleanedTime: " + cleanedTime);
 }
 
-function cleanGoldPrice(rawGoldPrice) {
+function cleanRawGoldPrice(rawGoldPrice) {
   return Number(rawGoldPrice);
 }
 

@@ -1,19 +1,14 @@
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
 
-async function scrapeWebsite(props) {
+async function scrapeWebsite(
+  url,
+  goldPriceCssSelector,
+  dateTimeCssSelector,
+  dateCssSelector,
+  timeCssSelector
+) {
   console.log("(+) Inside scrapeWebsite()");
-  console.log("(+) props: \n" + JSON.stringify(props));
-
-  const {
-    url,
-    goldPriceCssSelector,
-    dateTimeCssSelector,
-    dateCssSelector,
-    timeCssSelector
-  } = props;
-
-
 
   try {
     const browser = await puppeteer.launch({

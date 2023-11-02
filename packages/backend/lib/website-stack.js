@@ -24,6 +24,13 @@ class WebsiteStack extends Stack {
       tableArn,
       tableName
     });
+
+    new Website(this, "Bhima", {
+      websiteName: "Bhima",
+      schedule: "",
+      tableArn,
+      tableName
+    })
   };
 }
 
