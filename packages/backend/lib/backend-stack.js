@@ -3,6 +3,7 @@ const { LambdaStack } = require('./lambda-stack');
 const { ApiStack } = require('./api-stack');
 const { WebsiteStack } = require('./website-stack');
 const { DataStack } = require('./data-stack');
+const { UiDeploymentStack } = require('./ui-deployment-stack');
 
 class BackendStack extends Stack {
   /**
@@ -28,7 +29,9 @@ class BackendStack extends Stack {
 
     new ApiStack(this, "ApiStack", {
       pricesApi_LambdaIntegration: lambdaStack.pricesApi_LambdaIntegration
-    })
+    });
+
+    new UiDeploymentStack(this, "UiDeploymentStack");
   }
 }
 
