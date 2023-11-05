@@ -21,7 +21,10 @@ class BackendStack extends Stack {
       tableName: dataStack.websiteTable.tableName
     });
 
-    const lambdaStack = new LambdaStack(this, "LambdaStack");
+    const lambdaStack = new LambdaStack(this, "LambdaStack", {
+      tableArn: dataStack.websiteTable.tableArn,
+      tableName: dataStack.websiteTable.tableName
+    });
 
     new ApiStack(this, "ApiStack", {
       pricesApi_LambdaIntegration: lambdaStack.pricesApi_LambdaIntegration

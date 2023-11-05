@@ -14,7 +14,6 @@ async function scrapeWebsite(props) {
   } = props;
 
 
-
   try {
     const browser = await puppeteer.launch({
       executablePath: await chromium.executablePath(),
