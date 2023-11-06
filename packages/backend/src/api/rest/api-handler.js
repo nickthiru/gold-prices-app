@@ -14,6 +14,8 @@ exports.handler = async (event, context, callback) => {
   // let body = "";
   let response = "";
 
+  // addCorsHeader(event);
+
   try {
     switch (event.httpMethod) {
       case "GET":
@@ -37,6 +39,11 @@ exports.handler = async (event, context, callback) => {
 
       return {
         statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "*"
+        },
         body: JSON.stringify(data)
       };
     }
@@ -44,3 +51,8 @@ exports.handler = async (event, context, callback) => {
     console.log(error);
   }
 };
+
+// function addCorsHeader(arg) {
+//   arg.headers["Access-Control-Allow-Origin"] = "*";
+//   arg.headers["Access-Control-Allow-Methods"] = "*";
+// }
