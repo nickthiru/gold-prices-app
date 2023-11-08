@@ -16,6 +16,9 @@ class LambdaStack extends Stack {
 
     const { tableArn, tableName } = props;
 
+
+    /* AWS API Gateway */
+
     const pricesApi_Lambda = new NodejsFunction(this, "PricesApi_Lambda", {
       bundling: {
         externalModules: ["@aws-sdk"]
@@ -34,17 +37,16 @@ class LambdaStack extends Stack {
       effect: Effect.ALLOW,
       resources: [tableArn],
       actions: [
-        "dynamodb:PutItem",
-        "dynamodb:Scan",
-        "dynamodb:GetItem",
         "dynamodb:Query",
-        "dynamodb:UpdateItem",
-        "dynamodb:DeleteItem"
+        // "dynamodb:PutItem",
+        // "dynamodb:Scan",
+        // "dynamodb:GetItem",
+        // "dynamodb:UpdateItem",
+        // "dynamodb:DeleteItem"
       ]
     }));
 
     this.pricesApi_LambdaIntegration = new LambdaIntegration(pricesApi_Lambda);
-
   }
 }
 

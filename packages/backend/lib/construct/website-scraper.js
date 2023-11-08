@@ -3,17 +3,17 @@ const { Duration } = require("aws-cdk-lib");
 const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 const { PolicyStatement, Effect } = require("aws-cdk-lib/aws-iam");
-// const { EventbridgeToLambda } = require("@aws-solutions-constructs/aws-eventbridge-lambda");
-// const { Schedule } = require("aws-cdk-lib/aws-events");
+const { EventbridgeToLambda } = require("@aws-solutions-constructs/aws-eventbridge-lambda");
+const { Schedule } = require("aws-cdk-lib/aws-events");
 const path = require("path");
 
 const packageLockJsonFile = "../../../../package-lock.json";
 
-class Website extends Construct {
+class WebsiteScraper extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const { websiteName, schedule, tableArn, tableName } = props;
+    const { websiteName, tableArn, tableName } = props;
 
     console.log(`(+) Inside ${websiteName} Website construct`);
 
@@ -28,7 +28,7 @@ class Website extends Construct {
       runtime: Runtime.NODEJS_18_X,
       memorySize: 1024,
       timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, `../../src/website/${websiteName}/handler.js`)),
+      entry: (path.join(__dirname, `../../src/website/${websiteName}/scrape-handler.js`)),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: { tableName }
@@ -39,9 +39,9 @@ class Website extends Construct {
       resources: [tableArn],
       actions: [
         "dynamodb:PutItem",
-        "dynamodb:Scan",
-        "dynamodb:GetItem",
-        "dynamodb:Query",
+        // "dynamodb:Scan",
+        // "dynamodb:GetItem",
+        // "dynamodb:Query",
         // "dynamodb:UpdateItem",
         // "dynamodb:DeleteItem"
       ]
@@ -50,10 +50,10 @@ class Website extends Construct {
     // new EventbridgeToLambda(this, `${websiteName}_EventbridgeToLambda`, {
     //   existingLambdaObj: lambda,
     //   eventRuleProps: {
-    //     schedule: Schedule.rate(Duration.hours(1))
+    //     schedule: Schedule.rate(Duration.minutes(15))
     //   }
     // });
   };
 }
 
-module.exports = { Website };
+module.exports = { WebsiteScraper };

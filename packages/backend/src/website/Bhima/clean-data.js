@@ -3,8 +3,10 @@
 // Website date is displayed as: "[ UPDATED ON 01/11/2023 ]"
 // Website gold price is displayed as: " 5,640"
 
-function cleanData(rawDate, rawGoldPrice) {
+function cleanDataCb(scrapeDateTime, props) {
   console.log("(+) Inside cleanData()");
+
+  const { rawDate, rawGoldPrice } = props;
   console.log("(+) rawDate: " + rawDate);
   console.log("(+) rawGoldPrice: " + rawGoldPrice);
 
@@ -15,7 +17,7 @@ function cleanData(rawDate, rawGoldPrice) {
   console.log("(+) cleanedGoldPrice: " + cleanedGoldPrice);
 
   return {
-    dateTime: cleanedDate + "T00:00:00.000Z",
+    dateTime: cleanedDate + scrapeDateTime.slice(10),  // Slice and add the scrape time only, which is missing from this website.
     goldPrice: cleanedGoldPrice
   };
 }
@@ -51,4 +53,4 @@ function cleanRawGoldPrice(rawGoldPrice) {
   return Number(joinedPrice);
 }
 
-module.exports = { cleanData };
+module.exports = { cleanDataCb };

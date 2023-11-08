@@ -16,7 +16,7 @@ class DataStack extends Stack {
         type: AttributeType.STRING
       },
       sortKey: {
-        name: "scrapeDateInUTC",
+        name: "dateTime",
         type: AttributeType.STRING
       }
     });

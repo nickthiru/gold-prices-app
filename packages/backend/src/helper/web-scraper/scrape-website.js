@@ -3,7 +3,7 @@ const chromium = require("@sparticuz/chromium");
 
 async function scrapeWebsite(props) {
   console.log("(+) Inside scrapeWebsite()");
-  console.log("(+) props: \n" + JSON.stringify(props));
+  console.log("(+) props: \n" + JSON.stringify(props, null, 2));
 
   const {
     url,
@@ -47,15 +47,11 @@ async function scrapeWebsite(props) {
 
       if (timeCssSelector) rawTime = document.querySelector(timeCssSelector).innerText;
 
-      // Add timestamp to inform time of capture
-      const scrapeDateInUTC = new Date().toISOString();
-
       return {
         rawGoldPrice: rawGoldPrice,
         rawDateTime: rawDateTime,
         rawDate: rawDate,
         rawTime: rawTime,
-        scrapeDateInUTC: scrapeDateInUTC
       };
     },
       goldPriceCssSelector,

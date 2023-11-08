@@ -3,12 +3,14 @@
 // Website date-time is displayed as: "Last updated on : 01/11/23 11:00 AM"
 // Website gold price is displayed as: "₹5640"
 
-function cleanData(rawDateTime, rawGoldPrice) {
+function cleanDataCb(scrapeDateTime, props) {
   console.log("(+) Inside cleanData()");
+
+  const { rawDateTime, rawGoldPrice } = props;
   console.log("(+) rawDateTime: " + rawDateTime);
   console.log("(+) rawGoldPrice: " + rawGoldPrice);
 
-  const cleanedDateTime = cleanRawDateTime(rawDateTime);
+  const cleanedDateTime = cleanRawDateTime(rawDateTime, scrapeDateTime);
   console.log("(+) cleanedDateTime: " + cleanedDateTime);
 
   const cleanedGoldPrice = cleanRawGoldPrice(rawGoldPrice);
@@ -20,7 +22,7 @@ function cleanData(rawDateTime, rawGoldPrice) {
   };
 }
 
-function cleanRawDateTime(rawDateTime) {
+function cleanRawDateTime(rawDateTime, scrapeDateTime) {
 
   const slicedDate = rawDateTime.slice(18, 26);
   // console.log("(+) slicedDate: " + "#" + slicedDate + "#");
@@ -31,7 +33,7 @@ function cleanRawDateTime(rawDateTime) {
   const cleanedDate = cleanDate(slicedDate);
   // console.log("cleanedDate: " + cleanedDate);
 
-  const cleanedTime = cleanTime(slicedTime);
+  const cleanedTime = cleanTime(slicedTime, scrapeDateTime);
   // console.log("cleanedTime: " + cleanedTime);
 
   return cleanedDate + cleanedTime;
@@ -52,7 +54,7 @@ function cleanDate(slicedDate) {
   return year + "-" + month + "-" + day;
 }
 
-function cleanTime(slicedTime) {
+function cleanTime(slicedTime, scrapeDateTime) {
   // console.log("(+) slicedTime: " + slicedTime);
 
   var hours = "";
@@ -69,7 +71,7 @@ function cleanTime(slicedTime) {
   (ampm === "PM") ? hours = String(Number(slicedHours) + 12) : hours = slicedHours;
   // console.log("(+) hours: " + hours);
 
-  return "T" + hours + ":" + slicedMinutes + ":" + "00" + ".000Z";
+  return "T" + hours + ":" + slicedMinutes + ":" + scrapeDateTime.slice(-2);   // Slice and add the scrape seconds only, which is missing from this website.
 }
 
 function cleanRawGoldPrice(rawGoldPrice) {
@@ -81,4 +83,4 @@ function cleanRawGoldPrice(rawGoldPrice) {
   return Number(cleanedGoldPrice);
 }
 
-module.exports = { cleanData };
+module.exports = { cleanDataCb };

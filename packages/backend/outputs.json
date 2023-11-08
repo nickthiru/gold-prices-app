@@ -1,15 +1,15 @@
 {
   "BackendStackDataStackE94D765A": {
-    "ExportsOutputFnGetAttWebsiteTableF4B2AB07Arn08047D9E": "arn:aws:dynamodb:us-east-1:346761569124:table/BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-1EOQBSA0HXWT8",
-    "ExportsOutputRefWebsiteTableF4B2AB077CB0268F": "BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-1EOQBSA0HXWT8"
+    "ExportsOutputFnGetAttWebsiteTableF4B2AB07Arn08047D9E": "arn:aws:dynamodb:us-east-1:346761569124:table/BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-FV9L95A8QDG",
+    "ExportsOutputRefWebsiteTableF4B2AB077CB0268F": "BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-FV9L95A8QDG"
   },
   "BackendStackUiDeploymentStackEB3AC8AE": {
-    "url": "d3taf7pwws02tu.cloudfront.net"
+    "url": "dateghg5pq0uj.cloudfront.net"
   },
   "BackendStackLambdaStackF7DE59B6": {
-    "ExportsOutputFnGetAttPricesApiLambdaC3231A6CArn52372566": "arn:aws:lambda:us-east-1:346761569124:function:BackendStackLambdaStackF7D-PricesApiLambdaC3231A6C-kJzeEI0GoFfE"
+    "ExportsOutputFnGetAttPricesApiLambdaC3231A6CArn52372566": "arn:aws:lambda:us-east-1:346761569124:function:BackendStackLambdaStackF7D-PricesApiLambdaC3231A6C-3pR2ql68euS3"
   },
   "BackendStackApiStack96B9424F": {
-    "RestApiEndpoint0551178A": "https://e4d4pfsbu9.execute-api.us-east-1.amazonaws.com/prod/"
+    "RestApiEndpoint0551178A": "https://7z199gss5d.execute-api.us-east-1.amazonaws.com/prod/"
   }
 }

@@ -2,8 +2,6 @@
 const { QueryCommand } = require("@aws-sdk/lib-dynamodb");
 
 const websites = ["Live Chennai", "Thangamayil", "Bhima"];
-// const website = "Live Chennai";
-
 
 async function getPrices(ddbClient, tableName) {
   console.log("(+) Inside 'getPrices()'");
@@ -21,10 +19,10 @@ async function getPrices(ddbClient, tableName) {
         // TableName: "BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-1EOQBSA0HXWT8",
         TableName: tableName,
         KeyConditionExpression: "#siteName = :siteName",
-        ProjectionExpression: "#siteName, #goldKarat, #goldPrice",
+        ProjectionExpression: "#siteName, #dateTime, #goldPrice",
         ExpressionAttributeNames: {
           "#siteName": "siteName",
-          "#goldKarat": "goldKarat",
+          "#dateTime": "dateTime",
           "#goldPrice": "goldPrice"
         },
         ExpressionAttributeValues: {
