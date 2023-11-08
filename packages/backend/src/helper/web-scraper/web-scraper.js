@@ -19,6 +19,7 @@ async function WebScraper(ddbClient, tableName, siteName, ianaTimeZone, webScrap
 
     const dataToSave = {
       siteName,
+      scrapeDateTime,
       dateTime,
       goldPrice,
       // goldKarat,

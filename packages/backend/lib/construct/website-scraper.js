@@ -47,12 +47,12 @@ class WebsiteScraper extends Construct {
       ]
     }));
 
-    // new EventbridgeToLambda(this, `${websiteName}_EventbridgeToLambda`, {
-    //   existingLambdaObj: lambda,
-    //   eventRuleProps: {
-    //     schedule: Schedule.rate(Duration.minutes(15))
-    //   }
-    // });
+    new EventbridgeToLambda(this, `${websiteName}_EventbridgeToLambda`, {
+      existingLambdaObj: lambda,
+      eventRuleProps: {
+        schedule: Schedule.rate(Duration.minutes(15))
+      }
+    });
   };
 }
 
