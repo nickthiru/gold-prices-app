@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { styled } from "styled-components";
 import useFetch from "./hooks/useFetch";
+// import { useEffect } from "react";
+import { BackendStackApiStack96B9424F as BackendApiStack } from "../../backend/outputs.json";
 import { useEffect } from "react";
 // import "./App.css";
 
@@ -14,22 +15,24 @@ const Container = styled.div`
 `;
 
 const H1 = styled.h1`
-  color: red;
+  color: gold;
   text-align: center;
 `;
 
-const H2 = styled.h2`
-  color: blue;
-`;
+// const H2 = styled.h2`
+//   color: blue;
+// `;
 
 function App() {
-  const { get, loading } = useFetch(
-    "https://e4d4pfsbu9.execute-api.us-east-1.amazonaws.com/prod"
-  );
+  const { get, loading } = useFetch(BackendApiStack.RestApiEndpoint0551178A);
 
   const { data, error, status, fetchStatus } = useQuery({
     queryKey: ["prices"],
     queryFn: () => get("/prices"),
+    retry: 2,
+    staleTime: 900000,
+    refetchInterval: 900000,
+    refetchIntervalInBackground: true,
   });
 
   // useEffect(() => {
@@ -47,14 +50,39 @@ function App() {
   // );
 
   return (
+    // <Container>
+    //   <H1>Welcome to the Gold Price Tracker!</H1>
+    //   <H2>Live Chennai</H2>
+    //   {data ? <p>INR {data[0].goldPrice}</p> : null}
+    //   <H2>Thangamayil</H2>
+    //   {data ? <p>INR {data[1].goldPrice}</p> : null}
+    //   <H2>Bhima</H2>
+    //   {data ? <p>INR {data[2].goldPrice}</p> : null}
+    // </Container>
     <Container>
       <H1>Welcome to the Gold Price Tracker!</H1>
-      <H2>Live Chennai</H2>
-      {data ? <p>INR {data[0].goldPrice}</p> : null}
-      <H2>Thangamayil</H2>
-      {data ? <p>INR {data[1].goldPrice}</p> : null}
-      <H2>Bhima</H2>
-      {data ? <p>INR {data[2].goldPrice}</p> : null}
+      <table>
+        <tr>
+          <th>Website</th>
+          <th>Price</th>
+          <th>Last Updated</th>
+        </tr>
+        <tr>
+          <td>{data ? data[0].siteName : null}</td>
+          <td>{data ? data[0].goldPrice : null}</td>
+          <td>{data ? data[0].dateTime : null}</td>
+        </tr>
+        <tr>
+          <td>{data ? data[1].siteName : null}</td>
+          <td>{data ? data[1].goldPrice : null}</td>
+          <td>{data ? data[1].dateTime : null}</td>
+        </tr>
+        <tr>
+          <td>{data ? data[2].siteName : null}</td>
+          <td>{data ? data[2].goldPrice : null}</td>
+          <td>{data ? data[2].dateTime : null}</td>
+        </tr>
+      </table>
     </Container>
   );
 }
