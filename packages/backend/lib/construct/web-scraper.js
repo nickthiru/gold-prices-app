@@ -9,13 +9,13 @@ const path = require("path");
 
 const packageLockJsonFile = "../../../../package-lock.json";
 
-class WebsiteScraper extends Construct {
+class WebScraper extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const { websiteName, tableArn, tableName } = props;
+    const { siteName, tableArn, tableName } = props;
 
-    console.log(`(+) Inside ${websiteName} Website construct`);
+    console.log(`(+) Inside ${siteName} WebScraper construct`);
 
     // console.log("(+) tableArn: " + tableArn);
     // console.log("(+) tableName: " + tableName);
@@ -28,7 +28,7 @@ class WebsiteScraper extends Construct {
       runtime: Runtime.NODEJS_18_X,
       memorySize: 1024,
       timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, `../../src/website/${websiteName}/scrape-handler.js`)),
+      entry: (path.join(__dirname, `../../src/website/${siteName}/web-scraper-handler.js`)),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: { tableName }
@@ -39,21 +39,21 @@ class WebsiteScraper extends Construct {
       resources: [tableArn],
       actions: [
         "dynamodb:PutItem",
+        "dynamodb:Query",
         // "dynamodb:Scan",
         // "dynamodb:GetItem",
-        // "dynamodb:Query",
         // "dynamodb:UpdateItem",
         // "dynamodb:DeleteItem"
       ]
     }));
 
-    new EventbridgeToLambda(this, `${websiteName}_EventbridgeToLambda`, {
-      existingLambdaObj: lambda,
-      eventRuleProps: {
-        schedule: Schedule.rate(Duration.minutes(15))
-      }
-    });
+    // new EventbridgeToLambda(this, "EventbridgeToLambda", {
+    //   existingLambdaObj: lambda,
+    //   eventRuleProps: {
+    //     schedule: Schedule.rate(Duration.minutes(15))
+    //   }
+    // });
   };
 }
 
-module.exports = { WebsiteScraper };
+module.exports = { WebScraper };

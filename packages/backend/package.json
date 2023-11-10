@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.438.0",
+    "@aws-sdk/lib-dynamodb": "^3.445.0",
     "@aws-sdk/util-dynamodb": "^3.438.0",
     "@sparticuz/chromium": "^112.0.2",
     "aws-cdk-lib": "^2.102.0",

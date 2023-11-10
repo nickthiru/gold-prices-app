@@ -1,9 +1,9 @@
 const { Stack } = require('aws-cdk-lib');
 const { LambdaStack } = require('./lambda-stack');
 const { ApiStack } = require('./api-stack');
-const { WebsiteScraperStack } = require('./website-scraper-stack');
+const { WebScraperStack } = require('./web-scraper-stack');
 const { DataStack } = require('./data-stack');
-const { UiDeploymentStack } = require('./ui-deployment-stack');
+const { WebsiteHostingStack } = require('./website-hosting-stack');
 
 class BackendStack extends Stack {
   /**
@@ -17,21 +17,21 @@ class BackendStack extends Stack {
 
     const dataStack = new DataStack(this, "DataStack");
 
-    new WebsiteScraperStack(this, "WebsiteScraperStack", {
-      tableArn: dataStack.websiteTable.tableArn,
-      tableName: dataStack.websiteTable.tableName
+    new WebScraperStack(this, "WebScraperStack", {
+      tableArn: dataStack.AppTable.tableArn,
+      tableName: dataStack.AppTable.tableName
     });
 
     const lambdaStack = new LambdaStack(this, "LambdaStack", {
-      tableArn: dataStack.websiteTable.tableArn,
-      tableName: dataStack.websiteTable.tableName
+      tableArn: dataStack.AppTable.tableArn,
+      tableName: dataStack.AppTable.tableName
     });
 
     new ApiStack(this, "ApiStack", {
       pricesApi_LambdaIntegration: lambdaStack.pricesApi_LambdaIntegration
     });
 
-    // new UiDeploymentStack(this, "UiDeploymentStack");
+    // new WebsiteHostingStack(this, "WebsiteHostingStack");
   }
 }
 

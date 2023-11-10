@@ -1,5 +1,6 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { getPrices } = require("./get-prices.js");
+
+const DbQuery = require("../../helper/db/db-query.js");
 
 const ddbClient = new DynamoDBClient();
 
@@ -9,43 +10,41 @@ exports.handler = async (event, context, callback) => {
 
   const tableName = process.env.tableName;
 
-  let message = "";
-  let data = "";
-  // let body = "";
-  let response = "";
-
-  // addCorsHeader(event);
-
   try {
+    let data = "";
+
     switch (event.httpMethod) {
+
       case "GET":
-        // message = "Hello from GET";
-        data = await getPrices(ddbClient, tableName);
+        data = await DbQuery.latestPrices(ddbClient, tableName);
         break;
+
       default:
         throw new Error(`Unsupported route: ${event.httpMethod}`);
     }
 
-    if (data || message) {
+    // The following 'if' statement is currently coupled to the single
+    // API endpoint above. If the data prep is different for each endpoint,
+    // then move the 'if' block to the relevant methods themselves, instead
+    // of having it/them here.
+    if (data) {
       console.log("(+) data: \n" + JSON.stringify(data, null, 2));
       console.log("(+) typeof data: \n" + typeof data);
 
-      // response = {
-      //   statusCode: 200,
-      //   body: JSON.stringify(data)
-      // };
+      const body = JSON.stringify(data);
 
-      // return response;
-
-      return {
+      const response = {
         statusCode: 200,
+        // Add CORS header
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "*"
         },
-        body: JSON.stringify(data)
+        body: body,
       };
+
+      return response;
     }
   } catch (error) {
     console.log(error);

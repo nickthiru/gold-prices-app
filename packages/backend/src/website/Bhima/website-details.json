@@ -1,0 +1,9 @@
+{
+  "siteName": "Bhima",
+  "ianaTimeZone": "Asia/Kolkata",
+  "scrapeParams": {
+    "url": "https://bhima.com/gold-rate/",
+    "goldPriceCssSelector": "body > div.vision-cont > div > div > div > section > article > div:nth-child(2) > article > div > table > tbody > tr:nth-child(2) > td.txtAlignRight > span > span > span > span > span > span > span > span > span > span > span > span > span > span > span > span",
+    "dateCssSelector": "body > div.vision-cont > div > div > div > section > label > span"
+  }
+}

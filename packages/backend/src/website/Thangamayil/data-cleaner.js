@@ -3,8 +3,8 @@
 // Website date-time is displayed as: "Last updated on : 01/11/23 11:00 AM"
 // Website gold price is displayed as: "₹5640"
 
-function cleanDataCb(scrapeDateTime, props) {
-  console.log("(+) Inside cleanData()");
+module.exports = function cleanerCb(props, scrapeDateTime) {
+  console.log("\n(+) Inside cleanData()");
 
   const { rawDateTime, rawGoldPrice } = props;
   console.log("(+) rawDateTime: " + rawDateTime);
@@ -16,9 +16,18 @@ function cleanDataCb(scrapeDateTime, props) {
   const cleanedGoldPrice = cleanRawGoldPrice(rawGoldPrice);
   console.log("(+) cleanedGoldPrice: " + cleanedGoldPrice);
 
+  const uiDateTime = prepUiDateTime(scrapeDateTime, cleanedDateTime);
+
+  // return {
+  //   uiDateTime: cleanedDateTime,
+  //   siteDateTimeNow: cleanedDateTime,
+  //   goldPriceNow: cleanedGoldPrice
+  // };
+
   return {
-    dateTime: cleanedDateTime,
-    goldPrice: cleanedGoldPrice
+    uiDateTime: uiDateTime,
+    siteDateTimeNow: cleanedDateTime,
+    goldPriceNow: cleanedGoldPrice
   };
 }
 
@@ -36,7 +45,7 @@ function cleanRawDateTime(rawDateTime, scrapeDateTime) {
   const cleanedTime = cleanTime(slicedTime, scrapeDateTime);
   // console.log("cleanedTime: " + cleanedTime);
 
-  return cleanedDate + cleanedTime;
+  return (cleanedDate + cleanedTime);
 }
 
 function cleanDate(slicedDate) {
@@ -51,7 +60,7 @@ function cleanDate(slicedDate) {
   let day = splitDate[0];
   // console.log("(+) day: " + "#" + day + "#");
 
-  return year + "-" + month + "-" + day;
+  return (year + "-" + month + "-" + day);
 }
 
 function cleanTime(slicedTime, scrapeDateTime) {
@@ -71,7 +80,7 @@ function cleanTime(slicedTime, scrapeDateTime) {
   (ampm === "PM") ? hours = String(Number(slicedHours) + 12) : hours = slicedHours;
   // console.log("(+) hours: " + hours);
 
-  return "T" + hours + ":" + slicedMinutes + ":" + scrapeDateTime.slice(-2);   // Slice and add the scrape seconds only, which is missing from this website.
+  return ("T" + hours + ":" + slicedMinutes);
 }
 
 function cleanRawGoldPrice(rawGoldPrice) {
@@ -83,4 +92,6 @@ function cleanRawGoldPrice(rawGoldPrice) {
   return Number(cleanedGoldPrice);
 }
 
-module.exports = { cleanDataCb };
+function prepUiDateTime(scrapeDateTime, cleanedDateTime) {
+  return (cleanedDateTime + ":" + scrapeDateTime.slice(-2));   // Slice and add the scrape seconds only, which is missing from this website.
+}

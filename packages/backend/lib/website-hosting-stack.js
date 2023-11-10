@@ -6,7 +6,7 @@ const { BucketDeployment, Source } = require("aws-cdk-lib/aws-s3-deployment");
 const { existsSync } = require("fs");
 const { join } = require("path");
 
-class UiDeploymentStack extends Stack {
+class WebsiteHostingStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
@@ -17,7 +17,7 @@ class UiDeploymentStack extends Stack {
       return;
     }
 
-    const bucket = new Bucket(this, "UiDeploymentBucket");
+    const bucket = new Bucket(this, "WebsiteHostingBucket");
 
     new BucketDeployment(this, "BucketDeployment", {
       destinationBucket: bucket,
@@ -44,4 +44,4 @@ class UiDeploymentStack extends Stack {
   };
 }
 
-module.exports = { UiDeploymentStack };
+module.exports = { WebsiteHostingStack };

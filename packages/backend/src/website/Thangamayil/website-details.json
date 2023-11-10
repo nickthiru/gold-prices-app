@@ -1,0 +1,9 @@
+{
+  "siteName": "Thangamayil",
+  "ianaTimeZone": "Asia/Kolkata",
+  "scrapeParams": {
+    "url": "https://www.thangamayil.com/scheme/index/rateshistory/",
+    "goldPriceCssSelector": "#maincontent > div.columns > div > div.history-rate.card > div > div:nth-child(3) > h2",
+    "dateTimeCssSelector": "#maincontent > div.columns > div > div.history-rate.card > div > div.card-header > div > h5"
+  }
+}

@@ -10,13 +10,13 @@ class DataStack extends Stack {
     console.log("(+) Inside DataStack");
 
     // Create DDB to store price and other data for each website
-    this.websiteTable = new Table(this, "WebsiteTable", {
+    this.AppTable = new Table(this, "AppTable", {
       partitionKey: {
         name: "siteName",
         type: AttributeType.STRING
       },
       sortKey: {
-        name: "scrapeDateTime",
+        name: "uiDateTime",
         type: AttributeType.STRING
       }
     });

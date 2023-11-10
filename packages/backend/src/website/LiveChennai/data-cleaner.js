@@ -2,10 +2,10 @@
 
 // Website date is displayed as: "28/October/2023"
 // Website time is displayed as: "LAST UPDATE TIME:9:52:15 AM"
-// Website gold price is displayed as: "5640"
+// Website gold price is displayed as: "5640.00"
 
-function cleanDataCb(scrapeDateTime, props) {
-  console.log("(+) Inside cleanData()");
+module.exports = function cleanerCb(props) {
+  console.log("\n(+) Inside cleanData()");
 
   const { rawDate, rawTime, rawGoldPrice } = props;
   console.log("(+) rawDate: " + rawDate);
@@ -22,8 +22,9 @@ function cleanDataCb(scrapeDateTime, props) {
   console.log("(+) cleanedGoldPrice: " + cleanedGoldPrice);
 
   return {
-    dateTime: cleanedDate + cleanedTime,
-    goldPrice: cleanedGoldPrice
+    uiDateTime: cleanedDate + cleanedTime,
+    siteDateTimeNow: cleanedDate + cleanedTime,
+    goldPriceNow: cleanedGoldPrice
   };
 }
 
@@ -78,7 +79,7 @@ function cleanRawDate(rawDate) {
 
   const day = splitDate[0];
 
-  return year + "-" + month + "-" + day;
+  return (year + "-" + month + "-" + day);
 }
 
 function cleanRawTime(time) {
@@ -108,12 +109,10 @@ function cleanRawTime(time) {
   const seconds = splitTime[3].slice(0, 2);
   // console.log("seconds: " + seconds);
 
-  return "T" + hours + ":" + minutes + ":" + seconds;
+  return ("T" + hours + ":" + minutes + ":" + seconds);
   // console.log("(+) cleanedTime: " + cleanedTime);
 }
 
 function cleanRawGoldPrice(rawGoldPrice) {
   return Number(rawGoldPrice);
 }
-
-module.exports = { cleanDataCb };
