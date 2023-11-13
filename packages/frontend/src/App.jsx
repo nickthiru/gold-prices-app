@@ -52,22 +52,24 @@ export default function App() {
       <Header>Welcome to the Gold Price Tracker!</Header>
       <div style={{ marginTop: "20px" }}>
         <table>
-          <tr>
-            <th>Website</th>
-            <th>Price &#40;INR&#41;</th>
-            <th>Last Updated &#40;IST&#41;</th>
-          </tr>
-          {data
-            ? data.map((obj, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{obj.siteName}</td>
-                    <td>{obj.goldPrice}</td>
-                    <td>{format(obj.uiDateTime)}</td>
-                  </tr>
-                );
-              })
-            : null}
+          <tbody>
+            <tr>
+              <th>Website</th>
+              <th>Price &#40;INR&#41;</th>
+              <th>Last Updated &#40;IST&#41;</th>
+            </tr>
+            {data
+              ? data.map((obj, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{obj.siteName}</td>
+                      <td>{obj.goldPrice}</td>
+                      <td>{format(obj.uiDateTime)}</td>
+                    </tr>
+                  );
+                })
+              : null}
+          </tbody>
         </table>
       </div>
     </Container>
