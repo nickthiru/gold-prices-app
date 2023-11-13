@@ -1,30 +1,40 @@
 import { useQuery } from "@tanstack/react-query";
-import { styled } from "styled-components";
-import useFetch from "./hooks/useFetch";
-// import { useEffect } from "react";
-import { BackendStackApiStack96B9424F as BackendApiStack } from "../../backend/outputs.json";
-import { useEffect } from "react";
-// import "./App.css";
+// import { styled } from "styled-components";
 
-const Container = styled.div`
-  max-width: 960px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-left: auto;
-  margin-right: auto;
-`;
+import useFetch from "./hook/useFetch";
+import useFormatDateTime from "./hook/useFormatDateTime";
 
-const H1 = styled.h1`
-  color: gold;
-  text-align: center;
-`;
+import Container from "./component/ui/kit/Container";
 
-// const H2 = styled.h2`
-//   color: blue;
+import { BackendStackApiStack96B9424F as BackendApi } from "../../backend/outputs.json";
+import Header from "./component/ui/header/Header";
+
+// const H1 = styled.h1`
+//   color: gold;
+//   text-align: center;
 // `;
 
-function App() {
-  const { get, loading } = useFetch(BackendApiStack.RestApiEndpoint0551178A);
+// const data = [
+//   {
+//     siteName: "Live Chennai",
+//     uiDateTime: "2023-11-13T10:08:53",
+//     goldPrice: 5590,
+//   },
+//   {
+//     siteName: "Thangamayil",
+//     uiDateTime: "2023-11-13T10:36:53",
+//     goldPrice: 5545,
+//   },
+//   {
+//     siteName: "Bhima",
+//     uiDateTime: "2023-11-01T13:04:22",
+//     goldPrice: 5640,
+//   },
+// ];
+
+//
+export default function App() {
+  const { get, loading } = useFetch(BackendApi.RestApiEndpoint0551178A);
 
   const { data, error, status, fetchStatus } = useQuery({
     queryKey: ["prices"],
@@ -35,56 +45,31 @@ function App() {
     refetchIntervalInBackground: true,
   });
 
-  // useEffect(() => {
-  //   data.forEach((obj) => console.log("(+) obj: \n" + JSON.stringify(obj)));
-  // }, [data]);
-
-  // return (
-  //   <QueryClientProvider client={queryClient}>
-  //     <ReactQueryDevtools initialIsOpen={false} />
-  //     <Container>
-  //       <H1>Welcome to the Gold Price Tracker!</H1>
-  //       <H2>Live Chennai</H2>
-  //     </Container>
-  //   </QueryClientProvider>
-  // );
+  const { format } = useFormatDateTime();
 
   return (
-    // <Container>
-    //   <H1>Welcome to the Gold Price Tracker!</H1>
-    //   <H2>Live Chennai</H2>
-    //   {data ? <p>INR {data[0].goldPrice}</p> : null}
-    //   <H2>Thangamayil</H2>
-    //   {data ? <p>INR {data[1].goldPrice}</p> : null}
-    //   <H2>Bhima</H2>
-    //   {data ? <p>INR {data[2].goldPrice}</p> : null}
-    // </Container>
     <Container>
-      <H1>Welcome to the Gold Price Tracker!</H1>
-      <table>
-        <tr>
-          <th>Website</th>
-          <th>Price</th>
-          <th>Last Updated</th>
-        </tr>
-        <tr>
-          <td>{data ? data[0].siteName : null}</td>
-          <td>{data ? data[0].goldPrice : null}</td>
-          <td>{data ? data[0].dateTime : null}</td>
-        </tr>
-        <tr>
-          <td>{data ? data[1].siteName : null}</td>
-          <td>{data ? data[1].goldPrice : null}</td>
-          <td>{data ? data[1].dateTime : null}</td>
-        </tr>
-        <tr>
-          <td>{data ? data[2].siteName : null}</td>
-          <td>{data ? data[2].goldPrice : null}</td>
-          <td>{data ? data[2].dateTime : null}</td>
-        </tr>
-      </table>
+      <Header>Welcome to the Gold Price Tracker!</Header>
+      <div style={{ marginTop: "20px" }}>
+        <table>
+          <tr>
+            <th>Website</th>
+            <th>Price &#40;INR&#41;</th>
+            <th>Last Updated &#40;IST&#41;</th>
+          </tr>
+          {data
+            ? data.map((obj, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{obj.siteName}</td>
+                    <td>{obj.goldPrice}</td>
+                    <td>{format(obj.uiDateTime)}</td>
+                  </tr>
+                );
+              })
+            : null}
+        </table>
+      </div>
     </Container>
   );
 }
-
-export default App;
