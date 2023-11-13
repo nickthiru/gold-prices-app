@@ -55,7 +55,7 @@ export default function App() {
           <tbody>
             <tr>
               <th>Website</th>
-              <th>Price &#40;INR&#41;</th>
+              <th>22K Price &#40;INR&#41;</th>
               <th>Last Updated &#40;IST&#41;</th>
             </tr>
             {data
