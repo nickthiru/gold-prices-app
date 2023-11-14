@@ -6,6 +6,9 @@
   "BackendStackLambdaStackF7DE59B6": {
     "ExportsOutputFnGetAttPricesApiLambdaC3231A6CArn52372566": "arn:aws:lambda:us-east-1:346761569124:function:BackendStackLambdaStackF7D-PricesApiLambdaC3231A6C-aBHaN9AKf9ZK"
   },
+  "BackendStackWebsiteHostingStack8978F4B4": {
+    "url": "df5bmdgoi0hut.cloudfront.net"
+  },
   "BackendStackApiStack96B9424F": {
     "RestApiEndpoint0551178A": "https://wl0lh8i39l.execute-api.us-east-1.amazonaws.com/prod/"
   }

@@ -31,7 +31,7 @@ class BackendStack extends Stack {
       pricesApi_LambdaIntegration: lambdaStack.pricesApi_LambdaIntegration
     });
 
-    // new WebsiteHostingStack(this, "WebsiteHostingStack");
+    new WebsiteHostingStack(this, "WebsiteHostingStack");
   }
 }
 
