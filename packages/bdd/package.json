@@ -7,5 +7,10 @@
   "devDependencies": {
     "@cucumber/cucumber": "^10.0.0",
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.456.0",
+    "@aws-sdk/client-ses": "^3.454.0",
+    "dotenv": "^16.3.1"
   }
 }

@@ -1,0 +1,12 @@
+openapi: "3.0.0"
+info:
+  title: Gold Price Tracker API
+  version: "1.0"
+paths:
+  /gold/prices:
+    description: Prices of gold from various websites
+    get:
+      summary: get the prices
+      responses:
+        "200":
+          description: Successfully fetched the prices
