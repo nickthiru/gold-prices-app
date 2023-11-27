@@ -1,9 +1,7 @@
 const { Stack } = require('aws-cdk-lib');
-const { LambdaStack } = require('./lambda-stack');
-const { ApiStack } = require('./stack/api-stack');
-const { WebScraperStack } = require('./web-scraper-stack');
+const { RestApiStack } = require('./stack/rest-api-stack');
 const { DataStack } = require('./stack/data-stack');
-const { WebsiteHostingStack } = require('./website-hosting-stack');
+const { WebsiteHostingStack } = require('./stack/website-hosting-stack');
 const { SnsStack } = require('./stack/sns-stack');
 const { WorkflowStack } = require('./stack/workflow-stack');
 const { EmailTemplateStack } = require('./stack/email-template-stack');
@@ -18,31 +16,23 @@ class BackendStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const dataStack = new DataStack(this, "DataStack");
+    const data_Stack = new DataStack(this, "Data_Stack");
 
-    const snsStack = new SnsStack(this, "SnsStack");
+    const sns_Stack = new SnsStack(this, "Sns_Stack");
 
-    const workflowStack = new WorkflowStack(this, "WorkflowStack", {
-      snsStack: snsStack,
+    const workflow_Stack = new WorkflowStack(this, "Workflow_Stack", {
+      sns_Stack: sns_Stack,
+      tableArn: data_Stack.App_Table.tableArn,
+      tableName: data_Stack.App_Table.tableName,
     });
 
-    new EmailTemplateStack(this, "EmailTemplateStack");
-
-    // new WebScraperStack(this, "WebScraperStack", {
-    //   tableArn: dataStack.AppTable.tableArn,
-    //   tableName: dataStack.AppTable.tableName
+    // new RestApiStack(this, "RestApi_Stack", {
+    //   workflowStack: workflowStack,
     // });
 
-    // const lambdaStack = new LambdaStack(this, "LambdaStack", {
-    //   tableArn: dataStack.AppTable.tableArn,
-    //   tableName: dataStack.AppTable.tableName
-    // });
+    // new EmailTemplateStack(this, "EmailTemplate_Stack");
 
-    // new ApiStack(this, "ApiStack", {
-    //   pricesApi_LambdaIntegration: lambdaStack.pricesApi_LambdaIntegration
-    // });
-
-    new WebsiteHostingStack(this, "WebsiteHostingStack");
+    // new WebsiteHostingStack(this, "WebsiteHosting_Stack");
   }
 }
 

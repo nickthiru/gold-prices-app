@@ -5,12 +5,15 @@ const latestPrices = require("./query-method/latest-prices");
 
 // require("dotenv").config();
 
-module.exports = DbService = {
+module.exports = {
   // Item operations
-  saveItem,
-  deleteItem,
-
+  item: {
+    saveItem,
+    deleteItem,
+  },
   // Query operations
-  latestPrices,
-  latestPriceDateTime,
+  query: {
+    latestPrices,
+    latestPriceDateTime,
+  }
 };

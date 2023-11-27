@@ -4,6 +4,9 @@ const {
   TemplatePart
 } = require("@cloudcomponents/cdk-responsive-email-template");
 
+const { emailTemplate } = require("../../../bdd/src/service/email/email-template/price-change-alert-email-template-html-part.js");
+
+
 
 class EmailTemplateStack extends Stack {
   constructor(scope, id, props) {

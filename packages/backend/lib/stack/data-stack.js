@@ -5,10 +5,10 @@ class DataStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    console.log("(+) Inside DataStack");
+    console.log("(+) Inside 'DataStack'");
 
     // Create DDB to store price and other data for each website
-    this.AppTable = new Table(this, "AppTable", {
+    this.App_Table = new Table(this, "App_Table", {
       partitionKey: {
         name: "PK",
         type: AttributeType.STRING

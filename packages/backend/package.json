@@ -18,10 +18,16 @@
     "@aws-sdk/client-dynamodb": "^3.438.0",
     "@aws-sdk/lib-dynamodb": "^3.445.0",
     "@aws-sdk/util-dynamodb": "^3.438.0",
+    "@aws-solutions-constructs/aws-sns-sqs": "^2.46.0",
+    "@aws-solutions-constructs/aws-sqs-lambda": "^2.46.0",
     "@cloudcomponents/cdk-responsive-email-template": "^2.1.0",
     "@sparticuz/chromium": "^112.0.2",
+    "@wheatstalk/cdk-sns-log-group-subscription": "^0.0.12",
     "aws-cdk-lib": "^2.102.0",
     "constructs": "^10.0.0",
+    "html-minifier": "^4.0.0",
+    "js-beautify": "^1.14.11",
+    "mjml": "^4.14.1",
     "puppeteer-core": "19.8"
   }
 }

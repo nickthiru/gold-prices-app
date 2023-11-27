@@ -1,5 +1,7 @@
 const { Stack } = require("aws-cdk-lib");
-const { SendEmailAlertWorkflow } = require("../workflow-construct/send-email-alert-workflow");
+const { SendEmailAlertWorkflow } = require("../construct/workflow/send-email-alert-workflow");
+const { ScrapeWebsiteWorkflow } = require("../construct/workflow/scrape-website-workflow/scrape-website-workflow");
+const { GetLatestPriceWorkflow } = require("../construct/workflow/get-latest-price-workflow");
 
 // const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 // const { Runtime } = require("aws-cdk-lib/aws-lambda");
@@ -14,15 +16,24 @@ class WorkflowStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    console.log("(+) Inside WorkflowStack");
+    console.log("(+) Inside 'WorkflowStack'");
 
-    const { snsStack } = props;
+    const { sns_Stack, tableArn, tableName } = props;
 
-    new SendEmailAlertWorkflow(this, "SendEmailAlertWorkflow", {
-      websiteUpdated_Topic: snsStack.websiteUpdated_Topic,
-    })
+    this.scrapeWebsite_Workflow = new ScrapeWebsiteWorkflow(this, "ScrapeWebsite_Workflow", {
+      tableArn,
+      tableName,
+      outputEvent_Topic: sns_Stack.websiteUpdated_Topic,
+    });
 
+    // this.SendEmailAlertWorkflow = new SendEmailAlertWorkflow(this, "SendEmailAlertWorkflow", {
+    //   triggerEvent_Topic: snsStack.websiteUpdated_Topic,
+    // });
 
+    // this.getLatestPriceWorkflow = new GetLatestPriceWorkflow(this, "GetLatestPriceWorkflow", {
+    //   tableArn,
+    //   tableName,
+    // });
   }
 }
 
