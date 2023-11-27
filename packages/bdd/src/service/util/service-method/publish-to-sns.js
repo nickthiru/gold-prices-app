@@ -10,14 +10,14 @@ This is not related to this particular handler, but remember to register an "eve
 module.exports = async function publishToSns(snsClient, PublishCommand, topicArn, topicName) {
   console.log("Inside 'publish-to-sns' Util service method");
   console.log("topicArn: " + topicArn);
-  console.log("message: " + message);
+  console.log("topicName: " + topicName);
 
   try {
     var response = await snsClient.send(new PublishCommand({
       TopicArn: topicArn,
       Message: topicName,
     }));
-    console.log("response: " + JSON.stringify(response));
+    console.log("response: " + JSON.stringify(response, null, 2));
     return response;
   } catch (err) {
     console.log(err);

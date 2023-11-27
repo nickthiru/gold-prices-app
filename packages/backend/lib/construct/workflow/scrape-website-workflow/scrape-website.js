@@ -73,7 +73,7 @@ class ScrapeWebsite extends Construct {
       resources: [tableArn],
       actions: [
         "dynamodb:PutItem",
-        // "dynamodb:Query",
+        "dynamodb:Query",
         // "dynamodb:Scan",
         // "dynamodb:GetItem",
         // "dynamodb:UpdateItem",

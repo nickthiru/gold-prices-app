@@ -18,10 +18,10 @@ module.exports = async function latestPrices(ddbClient, tableName) {
       const response = await ddbClient.send(new QueryCommand({
         // TableName: "BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-1EOQBSA0HXWT8",
         TableName: tableName,
-        KeyConditionExpression: "#siteName = :siteName",
+        KeyConditionExpression: "#PK = :siteName",
         ProjectionExpression: "#siteName, #uiDateTime, #goldPrice",
         ExpressionAttributeNames: {
-          "#siteName": "siteName",
+          "#PK": "PK",
           "#uiDateTime": "uiDateTime",
           "#goldPrice": "goldPrice"
         },

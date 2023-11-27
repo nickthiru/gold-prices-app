@@ -99,7 +99,8 @@ exports.handler = async function (event, context) {
   // Save the data to the DB on update
   if (siteIsUpdated) {
     const dataToSave = {
-      siteName: siteName,
+      PK: `WEBSITE#${siteName}`,
+      SK: `UIDATETIME#${uiDateTime}`,
       uiDateTime: uiDateTime,
       goldPrice: goldPriceNow,
       siteDateTime: siteDateTimeNow
@@ -109,7 +110,7 @@ exports.handler = async function (event, context) {
     await Db.item.saveItem(ddbClient, tableName, dataToSave);
 
     // Publish to 'WebsiteUpdated' SNS Topic
-    Util.publishToSns(snsClient, PublishCommand, outputEventTopicArn, outputEventTopicName);
+    await Util.publishToSns(snsClient, PublishCommand, outputEventTopicArn, outputEventTopicName);
   }
 
   return {

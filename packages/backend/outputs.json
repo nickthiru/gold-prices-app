@@ -1,0 +1,10 @@
+{
+  "BackendStackDataStack51999D86": {
+    "ExportsOutputFnGetAttAppTable6140480EArn63AE95C7": "arn:aws:dynamodb:us-east-1:346761569124:table/BackendStackDataStack51999D86-AppTable6140480E-NR8C2LYSAH86",
+    "ExportsOutputRefAppTable6140480EA1CBED95": "BackendStackDataStack51999D86-AppTable6140480E-NR8C2LYSAH86"
+  },
+  "BackendStackSnsStack63454041": {
+    "ExportsOutputFnGetAttWebsiteUpdatedTopicADE5DB8DTopicNameA7768EEF": "WebsiteUpdated",
+    "ExportsOutputRefWebsiteUpdatedTopicADE5DB8D0445B089": "arn:aws:sns:us-east-1:346761569124:WebsiteUpdated"
+  }
+}
