@@ -5,16 +5,15 @@ Enables end users to be notified of price changes
 
     # Rule: 
 
-    Scenario: Registered users can subscribe for email alerts
+    Scenario: Registered users can subscribe to email alerts
       Given I am a registered user
 
         # Have an input box on frontend to sign up
 
       When I sign up for email alerts
 
-        # Will the emails need to be saved in DDB Table? So that
-        # a Lambda can read from it and send out the emails?
-        # Use Data Access Object (from Lambda Layer?)
+        # Save email to DDB Table so that
+        # a Lambda can read from it and send out the email
 
       Then I should receive a confirmation that I have signed up for email alerts
 
