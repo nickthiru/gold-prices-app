@@ -1,23 +1,55 @@
 const { Stack, CfnOutput } = require("aws-cdk-lib");
-const { RestApi, Cors } = require("aws-cdk-lib/aws-apigateway");
+const { RestApi, Deployment, Stage, Cors } = require("aws-cdk-lib/aws-apigateway");
 
 class RestApiStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const { workflowStack } = props;
+    const { workflow_Stack } = props;
 
-    this.restApi = new RestApi(this, "RestApi");
+    const restApi = new RestApi(this, "RestApi");
 
-    this.optionsWithCors = {
+    const optionsWithCors = {
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
         allowMethods: Cors.ALL_METHODS
       }
     };
 
-    const pricesResource = api.root.addResource("latest-price", optionsWithCors);
-    pricesResource.addMethod("GET", workflowStack.getLatestPriceWorkflow.lambdaIntegration);
+    const deployment = new Deployment(this, "Deployment", {
+      api: restApi,
+    })
+
+
+    /*** Stages ***/
+
+    const devStage = new Stage(this, "dev", {
+      deployment: deployment,
+      stageName: "dev",
+    })
+
+
+    /*** Price Service */
+
+    const price = restApi.root.addResource("price", optionsWithCors);
+
+    // Get latest price
+    const latestPrice = price.addResource("latest", optionsWithCors);
+    latestPrice.addMethod("GET", workflow_Stack.getLatestPrice_Workflow.lambdaIntegration);
+
+
+    /*** Email Service ***/
+
+    const email = restApi.root.addResource("email", optionsWithCors);
+
+    // Email alert
+    const alert = email.addResource("alert", optionsWithCors);
+
+    // Subscribe
+    alert.addMethod("POST", workflow_Stack.subscribeToEmailAlert_Workflow.lambdaIntegration);
+
+
+
 
 
     // new CfnOutput(this, "", {

@@ -10,7 +10,7 @@ module.exports = async function latestPriceDateTime(ddbClient, tableName, siteNa
 
     const response = await ddbClient.send(new QueryCommand({
       TableName: tableName,
-      KeyConditionExpression: "#PK = :siteName",
+      KeyConditionExpression: "#PK = :PK",
       ProjectionExpression: "#goldPrice, #siteDateTime",
       ExpressionAttributeNames: {
         "#PK": "PK",
@@ -18,7 +18,7 @@ module.exports = async function latestPriceDateTime(ddbClient, tableName, siteNa
         "#siteDateTime": "siteDateTime"
       },
       ExpressionAttributeValues: {
-        ":siteName": siteName
+        ":PK": `WEBSITE#${siteName}`,
       },
       ScanIndexForward: false,
       Limit: 1,

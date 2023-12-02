@@ -1,10 +1,10 @@
-const populateEmailTemplate = require("./method/populate-email-template");
-const sendEmail = require("./method/send-email");
+const prepareBulkEmailDestinations = require("./service-method/prepare-bulk-email-destinations");
+const sendBulkEmail = require("./service-method/send-bulk-email");
+const sendEmail = require("./service-method/send-email");
 
-// require("dotenv").config();
 
-module.exports = EmailService = {
+module.exports = {
   sendEmail,
-  populateEmailTemplate,
-  // registerForEmailAlerts,
+  sendBulkEmail,
+  prepareBulkEmailDestinations,
 };

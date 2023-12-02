@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "CDK Debug",
+      "name": "Local Debug",
       "args": ["${relativeFile}"],
       "env": {
         "AWS_REGION": "us-east-1"

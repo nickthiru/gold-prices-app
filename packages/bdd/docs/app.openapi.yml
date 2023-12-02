@@ -2,11 +2,58 @@ openapi: "3.0.0"
 info:
   title: Gold Price Tracker API
   version: "1.0"
+tags:
+  - name: price
+    description: Price service
+  - name: email
+    description: Email service
+components:
+  schemas:
+    price:
+      type: object
+      properties:
+        websiteName:
+          type: string
+        goldPrice:
+          type: string
+        uiDateTime:
+          type: string
+    email:
+      type: object
+      required:
+        - emailAddress
+      properties:
+        emailAddress:
+          type: string
 paths:
-  /gold/prices:
-    description: Prices of gold from various websites
+  /price/latest:
+    description: View latest price
     get:
-      summary: get the prices
+      tags:
+        - price
+      summary: Get latest price
       responses:
         "200":
           description: Successfully fetched the prices
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/price"
+  /email/alert:
+    description: Subscribe to email alert
+    post:
+      tags:
+        - email
+      summary: Save email in database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/email"
+      responses:
+        "200":
+          description: Successfully saved email in database
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/email"

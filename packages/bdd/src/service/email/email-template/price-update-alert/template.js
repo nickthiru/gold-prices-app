@@ -1,19 +1,14 @@
-exports.emailTemplate = `
-  <mjml>
-    <mj-head>
-      <mj-title>cloudcomponents - {{ title }}</mj-title>
-    </mj-head>
-    <mj-body>
-      <mj-section>
-        <mj-column>
-          <mj-text>
-            Hello {{ name }}!
-          </mj-text>
-        </mj-column>
-      </mj-section>
-    </mj-body>
-  </mjml>
-`;
+const { htmlPart } = require("./html-part")
+
+module.exports = {
+  templateName: "PriceUpdateAlert",
+  subjectPart: "Alert! Gold Prices Updated!",
+  textPart: "Gold prices have been updated! Check the website!",
+  htmlPart: htmlPart,
+  parsingOptions: {
+    beautify: true,
+  },
+}
 
 // module.exports = emailTemplate = {
 //   Source: "goldpricestracker@gmail.com",

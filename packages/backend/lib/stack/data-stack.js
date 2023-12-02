@@ -7,8 +7,7 @@ class DataStack extends Stack {
 
     console.log("(+) Inside 'DataStack'");
 
-    // Create DDB to store price and other data for each website
-    this.App_Table = new Table(this, "App_Table", {
+    this.app_Table = new Table(this, "App_Table", {
       partitionKey: {
         name: "PK",
         type: AttributeType.STRING
@@ -18,18 +17,6 @@ class DataStack extends Stack {
         type: AttributeType.STRING
       }
     });
-
-
-    // this.AppTable = new Table(this, "AppTable", {
-    //   partitionKey: {
-    //     name: "siteName",
-    //     type: AttributeType.STRING
-    //   },
-    //   sortKey: {
-    //     name: "uiDateTime",
-    //     type: AttributeType.STRING
-    //   }
-    // });
   };
 }
 

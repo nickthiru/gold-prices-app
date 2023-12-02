@@ -1,19 +1,19 @@
-const { Stack } = require("aws-cdk-lib");
+const { Construct } = require("constructs");
 const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 const { Duration } = require("aws-cdk-lib");
 const { PolicyStatement, Effect } = require("aws-cdk-lib/aws-iam");
 const { LambdaIntegration } = require("aws-cdk-lib/aws-apigateway");
 const path = require("path");
-const { Construct } = require("constructs");
 
-const packageLockJsonFile = "../../../package-lock.json";
+const packageLockJsonFile = "../../../../../../package-lock.json";
+
 
 class GetLatestPriceWorkflow extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    console.log("(+) Inside LambdaStack");
+    console.log("(+) Inside GetLatestPriceWorkflow");
 
     const { tableArn, tableName } = props;
 
@@ -28,10 +28,12 @@ class GetLatestPriceWorkflow extends Construct {
       // memorySize: 1024,
       memorySize: 512,
       timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, `../../../../bdd/src/workflow/get-latest-price-workflow.js`)),
+      entry: (path.join(__dirname, "../../../../../bdd/src/service/price/workflow/get-latest-price-workflow.js")),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
-      environment: { tableName }
+      environment: {
+        TABLE_NAME: tableName
+      }
     });
 
     lambda.addToRolePolicy(new PolicyStatement({

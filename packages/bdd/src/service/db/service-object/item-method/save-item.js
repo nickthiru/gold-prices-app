@@ -5,7 +5,7 @@ const { marshall } = require("@aws-sdk/util-dynamodb");
 module.exports = async function saveItem(ddbClient, tableName, dataToSave) {
   console.log("\n");
   console.log("(+) Inside 'saveItem()'");
-  // console.log("(+) tableName: " + tableName);
+  console.log("(+) tableName: " + tableName);
   console.log("(+) dataToSave: \n" + JSON.stringify(dataToSave, null, 2));
 
   try {

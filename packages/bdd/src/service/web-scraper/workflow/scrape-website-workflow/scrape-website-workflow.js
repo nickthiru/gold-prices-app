@@ -1,10 +1,10 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
+const { SNSClient } = require("@aws-sdk/client-sns");
 
 
 const WebScraper = require("../../service-object/web-scraper-service.js");
-const Db = require("../../../db/db-service.js");
-const Util = require("../../../util/util-service.js");
+const Db = require("../../../db/service-object/db-service.js");
+const Util = require("../../../util/service-object/util-service.js");
 
 
 const ddbClient = new DynamoDBClient();
@@ -41,80 +41,86 @@ exports.handler = async function (event, context) {
 
   /* Steps */
 
-  const { goldPrice, siteDateTime } = await Db.query.latestPriceDateTime(ddbClient, tableName, siteName);
+  try {
+    const { goldPrice, siteDateTime } = await Db.query.latestPriceDateTime(ddbClient, tableName, siteName);
 
-  // Bhima
-  // Website date is displayed as: "[ UPDATED ON 01/11/2023 ]"
-  // Website gold price is displayed as: " 5,640"
+    // Bhima
+    // Website date is displayed as: "[ UPDATED ON 01/11/2023 ]"
+    // Website gold price is displayed as: " 5,640"
 
-  // const siteDateTime = "2023-11-01";
-  // const siteDateTime = "2023-10-31";
-  // const siteDateTime = undefined;
+    // const siteDateTime = "2023-11-01";
+    // const siteDateTime = "2023-10-31";
+    // const siteDateTime = undefined;
 
-  // const goldPrice = 5640;
-  // const goldPrice = 5641;
-  // const goldPrice = undefined;
+    // const goldPrice = 5640;
+    // const goldPrice = 5641;
+    // const goldPrice = undefined;
 
-  // Live Chennai
-  // Website date is displayed as: "28/October/2023"
-  // Website time is displayed as: "LAST UPDATE TIME:9:52:15 AM"
-  // Website gold price is displayed as: "5640.00"
+    // Live Chennai
+    // Website date is displayed as: "28/October/2023"
+    // Website time is displayed as: "LAST UPDATE TIME:9:52:15 AM"
+    // Website gold price is displayed as: "5640.00"
 
-  // const siteDateTime = "2023-11-01T09:52:15";
-  // const goldPrice = 5590;
-
-
-  // Thangamayil
-  // Website date-time is displayed as: "Last updated on : 01/11/23 11:00 AM"
-  // Website gold price is displayed as: "₹5640"
-
-  // const siteDateTime = "2023-11-13T10:36";
-  // const goldPrice = 5545;
+    // const siteDateTime = "2023-11-01T09:52:15";
+    // const goldPrice = 5590;
 
 
-  // console.log("(+) siteDateTime: " + siteDateTime);
-  // console.log("(+) goldPrice: " + goldPrice);
+    // Thangamayil
+    // Website date-time is displayed as: "Last updated on : 01/11/23 11:00 AM"
+    // Website gold price is displayed as: "₹5640"
+
+    // const siteDateTime = "2023-11-13T10:36";
+    // const goldPrice = 5545;
 
 
-  const rawScrapeData = await WebScraper.scrapeWebsite(scrapeParams);
-  console.log("(+) rawScrapeData: \n" + JSON.stringify(rawScrapeData, null, 2));
+    // console.log("(+) siteDateTime: " + siteDateTime);
+    // console.log("(+) goldPrice: " + goldPrice);
 
 
-  // Fetch local time as scrape date/time to be used to fill in holes in the date/time on the websites
-  const scrapeDateTime = await Util.getLocalDateTime(ianaTimeZone);
-  console.log("(+) scrapeDateTime: " + scrapeDateTime);
+    const rawScrapeData = await WebScraper.scrapeWebsite(scrapeParams);
+    console.log("(+) rawScrapeData: \n" + JSON.stringify(rawScrapeData, null, 2));
 
 
-  // Clean the scraped data
-  const { uiDateTime, siteDateTimeNow, goldPriceNow } = Util.cleanData(scrapeDateTime, rawScrapeData, cleanerCb);
-  console.log("(+) uiDateTime: " + uiDateTime);
-  console.log("(+) siteDateTimeNow: " + siteDateTimeNow);
-  console.log("(+) goldPriceNow: " + goldPriceNow);
+    // Fetch local time as scrape date/time to be used to fill in holes in the date/time on the websites
+    const scrapeDateTime = await Util.getLocalDateTime(ianaTimeZone);
+    console.log("(+) scrapeDateTime: " + scrapeDateTime);
 
 
-  // Check if the website has beeen updated
-  const siteIsUpdated = Util.checkIfSiteUpdated(siteDateTime, siteDateTimeNow, goldPrice, goldPriceNow);
-  console.log("(+) siteIsUpdated: " + siteIsUpdated);
+    // Clean the scraped data
+    const { uiDateTime, siteDateTimeNow, goldPriceNow } = Util.cleanData(scrapeDateTime, rawScrapeData, cleanerCb);
+    console.log("(+) uiDateTime: " + uiDateTime);
+    console.log("(+) siteDateTimeNow: " + siteDateTimeNow);
+    console.log("(+) goldPriceNow: " + goldPriceNow);
 
-  // Save the data to the DB on update
-  if (siteIsUpdated) {
-    const dataToSave = {
-      PK: `WEBSITE#${siteName}`,
-      SK: `UIDATETIME#${uiDateTime}`,
-      uiDateTime: uiDateTime,
-      goldPrice: goldPriceNow,
-      siteDateTime: siteDateTimeNow
+
+    // Check if the website has beeen updated
+    const siteIsUpdated = Util.checkIfSiteUpdated(siteDateTime, siteDateTimeNow, goldPrice, goldPriceNow);
+    console.log("(+) siteIsUpdated: " + siteIsUpdated);
+
+    // Save the data to the DB on update
+    if (siteIsUpdated) {
+      const dataToSave = {
+        PK: `WEBSITE#${siteName}`,
+        SK: `UI_DATETIME#${uiDateTime}`,
+        siteName: siteName,
+        uiDateTime: uiDateTime,
+        goldPrice: goldPriceNow,
+        siteDateTime: siteDateTimeNow
+      };
+      console.log("(+) dataToSave: \n" + JSON.stringify(dataToSave, null, 2));
+
+      await Db.item.saveItem(ddbClient, tableName, dataToSave);
+
+      // Publish to 'WebsiteUpdated' SNS Topic
+      await Util.publishToSns(snsClient, outputEventTopicArn, outputEventTopicName);
+    }
+
+    return {
+      statusCode: 200,
+      message: "Web scraper successfully completed"
     };
-    console.log("(+) dataToSave: \n" + JSON.stringify(dataToSave, null, 2));
 
-    await Db.item.saveItem(ddbClient, tableName, dataToSave);
-
-    // Publish to 'WebsiteUpdated' SNS Topic
-    await Util.publishToSns(snsClient, PublishCommand, outputEventTopicArn, outputEventTopicName);
+  } catch (error) {
+    console.log("(-) Error: " + error);
   }
-
-  return {
-    statusCode: 200,
-    message: "Web scraper successfully completed"
-  };
 }

@@ -10,9 +10,9 @@ const { SqsToLambda } = require("@aws-solutions-constructs/aws-sqs-lambda");
 const path = require("path");
 
 
-const packageLockJsonFilePath = "../../../../../package-lock.json";
+const packageLockJsonFilePath = "../../../../../../package-lock.json";
 
-const workflowHandlerPath = "../../../../bdd/src/service/email/workflow/send-email-alert-workflow.js";
+const workflowHandlerPath = "../../../../../bdd/src/service/email/workflow/send-email-alert-workflow.js";
 
 
 const domainWorkflow = {
@@ -39,7 +39,17 @@ class SendEmailAlertWorkflow extends Construct {
 
     console.log("(+) Inside 'SendEmailAlertWorkflow' construct");
 
-    const { triggerEvent_Topic } = props;
+    const {
+      triggerEvent_Topic,
+      emailTemplateName,
+      tableArn,
+      tableName
+    } = props;
+
+    console.log("(+) tableArn: " + tableArn);
+    console.log("(+) tableName: " + tableName);
+    console.log("(+) triggerEvent_Topic: \n" + triggerEvent_Topic);
+    console.log("(+) emailTemplateName: " + emailTemplateName);
 
 
     const queue = new Queue(this, "Queue");
@@ -49,25 +59,37 @@ class SendEmailAlertWorkflow extends Construct {
       entry: (path.join(__dirname, workflowHandlerPath)),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFilePath)),
-      // environment: {
-      //   outputEventTopicName: outputEventTopic.topicName,
-      //   outputEventTopicArn: outputEventTopic.topicArn
-      // },
-      // initialPolicy: [
-      //   new PolicyStatement({
-      //     effect: Effect.ALLOW,
-      //     resources: [`arn:aws:sns:us-east-1:346761569124:${outputEventTopic.topicName}`],
-      //     actions: ["sns:Publish"]
-      //   })
-      // ],
+      environment: {
+        TABLE_NAME: tableName,
+        EMAIL_TEMPLATE_NAME: emailTemplateName,
+      }
     });
 
-    new SnsToSqs(this, `${workflow}SnsToSqs`, {
+    lambda.addToRolePolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      resources: [tableArn],
+      actions: [
+        "dynamodb:Query",
+      ]
+    }));
+
+    lambda.addToRolePolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      resources: [
+        "arn:aws:ses:us-east-1:346761569124:identity/*",
+        `arn:aws:ses:us-east-1:346761569124:template/${emailTemplateName}`
+      ],
+      actions: [
+        "ses:SendBulkTemplatedEmail",
+      ]
+    }));
+
+    new SnsToSqs(this, "SendEmailAlertWorkflow_SnsToSqs", {
       existingTopicObj: triggerEvent_Topic,
       existingQueueObj: queue,
     });
 
-    new SqsToLambda(this, `${workflow}SqsToLambda`, {
+    new SqsToLambda(this, "SendEmailAlertWorkflow_SqsToLambda", {
       existingQueueObj: queue,
       existingLambdaObj: lambda
     });

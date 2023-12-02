@@ -20,17 +20,18 @@ class BackendStack extends Stack {
 
     const sns_Stack = new SnsStack(this, "Sns_Stack");
 
+    const emailTemplate_Stack = new EmailTemplateStack(this, "EmailTemplate_Stack");
+
     const workflow_Stack = new WorkflowStack(this, "Workflow_Stack", {
       sns_Stack: sns_Stack,
-      tableArn: data_Stack.App_Table.tableArn,
-      tableName: data_Stack.App_Table.tableName,
+      emailTemplate_Stack: emailTemplate_Stack,
+      tableArn: data_Stack.app_Table.tableArn,
+      tableName: data_Stack.app_Table.tableName,
     });
 
-    // new RestApiStack(this, "RestApi_Stack", {
-    //   workflowStack: workflowStack,
-    // });
-
-    // new EmailTemplateStack(this, "EmailTemplate_Stack");
+    new RestApiStack(this, "RestApi_Stack", {
+      workflow_Stack: workflow_Stack,
+    });
 
     // new WebsiteHostingStack(this, "WebsiteHosting_Stack");
   }

@@ -4,10 +4,10 @@ Check the 'event' object for group-level authorization. https://www.udemy.com/co
 This is not related to this particular handler, but remember to register an "event" at the end of each task/function to SNS.
 */
 
-// const { PublishCommand } = require("@aws-sdk/client-sns");
+const { PublishCommand } = require("@aws-sdk/client-sns");
 
 
-module.exports = async function publishToSns(snsClient, PublishCommand, topicArn, topicName) {
+module.exports = async function publishToSns(snsClient, topicArn, topicName) {
   console.log("Inside 'publish-to-sns' Util service method");
   console.log("topicArn: " + topicArn);
   console.log("topicName: " + topicName);

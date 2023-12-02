@@ -1,39 +1,41 @@
 const { QueryCommand } = require("@aws-sdk/lib-dynamodb");
 
 // API
-module.exports = async function latestPrices(ddbClient, tableName) {
-  console.log("(+) Inside 'getPrices()'");
+module.exports = async function latestPrice(ddbClient, tableName) {
+  console.log("(+) Inside 'latestPrice()'");
   console.log("(+) tableName: " + tableName);
 
-  const websites = ["Live Chennai", "Thangamayil", "Bhima"];
+  // const websites = ["Live Chennai", "Thangamayil", "Bhima"];
+  const siteNames = ["Live Chennai"];
+
 
   try {
     console.log("(+) Getting from DyDB...");
 
     const data = [];
 
-    const responses = websites.map(async (website) => {
-      console.log("(+) website: " + website);
+    const responses = siteNames.map(async (siteName) => {
+      console.log("(+) siteName: " + siteName);
 
       const response = await ddbClient.send(new QueryCommand({
         // TableName: "BackendStackDataStackE94D765A-WebsiteTableF4B2AB07-1EOQBSA0HXWT8",
         TableName: tableName,
-        KeyConditionExpression: "#PK = :siteName",
+        KeyConditionExpression: "#PK = :PK",
         ProjectionExpression: "#siteName, #uiDateTime, #goldPrice",
         ExpressionAttributeNames: {
           "#PK": "PK",
+          "#siteName": "siteName",
           "#uiDateTime": "uiDateTime",
-          "#goldPrice": "goldPrice"
+          "#goldPrice": "goldPrice",
         },
         ExpressionAttributeValues: {
-          ":siteName": website
+          ":PK": `WEBSITE#${siteName}`,
         },
         ScanIndexForward: false,
-        Limit: 1
+        Limit: 1,
       }));
 
       console.log("(+) response: \n" + JSON.stringify(response, null, 2));
-      // console.log("(+) typeof response: \n" + typeof response);
 
       console.log("(+) response['Items'][0]: \n" + JSON.stringify(response["Items"][0], null, 2));
 

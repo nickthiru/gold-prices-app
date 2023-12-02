@@ -36,9 +36,7 @@ class ScrapeWebsite extends Construct {
     super(scope, id, props);
 
     const { siteName, tableArn, tableName, outputEvent_Topic } = props;
-
-    console.log(`(+) Inside ${siteName} ScrapeWebsite construct`);
-
+    // console.log(`(+) Inside ${siteName} ScrapeWebsite construct`);
     // console.log("(+) tableArn: " + tableArn);
     // console.log("(+) tableName: " + tableName);
 
@@ -74,10 +72,6 @@ class ScrapeWebsite extends Construct {
       actions: [
         "dynamodb:PutItem",
         "dynamodb:Query",
-        // "dynamodb:Scan",
-        // "dynamodb:GetItem",
-        // "dynamodb:UpdateItem",
-        // "dynamodb:DeleteItem"
       ]
     }));
 

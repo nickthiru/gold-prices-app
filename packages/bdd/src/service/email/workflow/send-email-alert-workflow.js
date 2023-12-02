@@ -1,13 +1,10 @@
-const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses");
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { SESClient } = require("@aws-sdk/client-ses");
 
-const {
-  populateEmailTemplate,
-  sendEmail
-} = require("../service/email/email-service.js");
+const Email = require("../service-object/email-service.js");
+const Db = require("../../db/service-object/db-service.js");
 
-const emailTemplate = require("../service/email/email-template/price-change-alert-email-template.js");
-
-require("dotenv").config();
+// require("dotenv").config();
 
 
 const sesConfig = {
@@ -15,21 +12,39 @@ const sesConfig = {
 }
 
 const sesClient = new SESClient(sesConfig);
+const ddbClient = new DynamoDBClient();
 
 
-exports.handler = async function (event) {
+exports.handler = async function sendEmailAlertWorkflow(event, context) {
+  console.log("Inside 'send-email-alert-workflow' handler");
+  console.log("event: \n" + JSON.stringify(event, null, 2));
+  console.log("context: \n" + JSON.stringify(context, null, 2));
 
-  // const subscriberEmails = get
+  const tableName = process.env.TABLE_NAME;
+  console.log("(+) tableName: " + tableName);
 
-  // const emailData = prepareEmailData(data);
+  const emailTemplateName = process.env.EMAIL_TEMPLATE_NAME;
+  console.log("(+) emailTemplateName: " + emailTemplateName);
 
-  // const result = sendEmail(sesClient, SendEmailCommand, emailTemplate, emailData);
 
-  // return {
-  //   statusCode: 200,
-  //   message: "Web scraper successfully completed"
-  // };
+  try {
+    const data = {
+      title: "Test Title",
+      name: "Nick"
+    };
+
+    const emailAlertSubscribers = await Db.query.emailAlertSubscribers(ddbClient, tableName);
+
+    const destinations = Email.prepareBulkEmailDestinations(emailAlertSubscribers);
+
+    await Email.sendBulkEmail(sesClient, emailTemplateName, destinations, data);
+
+    return {
+      statusCode: 200,
+      message: "send-email-alert-workflow successfully completed"
+    };
+
+  } catch (error) {
+    console.log("(-) Error: " + error);
+  }
 };
-
-// const populatedEmailTemplate = populateEmailTemplate(data, emailTemplate);
-// const result = sendEmail(sesClient, SendEmailCommand, populatedEmailTemplate);

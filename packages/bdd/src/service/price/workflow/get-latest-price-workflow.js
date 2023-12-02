@@ -1,27 +1,21 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 
-const DbQuery = require("../../helper/db/db-query.js");
+
+const Db = require("../../db/service-object/db-service.js");
+
 
 const ddbClient = new DynamoDBClient();
 
 
-exports.handler = async (event, context, callback) => {
-  console.log("(+) event: \n" + JSON.stringify(event, null, 2));
+exports.handler = async function getLatestPriceWorkflow(event, context) {
+  console.log("Inside 'get-latest-price-workflow' handler");
+  console.log("event: \n" + JSON.stringify(event, null, 2));
+  console.log("context: \n" + JSON.stringify(context, null, 2));
 
-  const tableName = process.env.tableName;
+  const tableName = process.env.TABLE_NAME;
 
   try {
-    let data = "";
-
-    switch (event.httpMethod) {
-
-      case "GET":
-        data = await DbQuery.latestPrices(ddbClient, tableName);
-        break;
-
-      default:
-        throw new Error(`Unsupported route: ${event.httpMethod}`);
-    }
+    const data = await Db.query.latestPrice(ddbClient, tableName);
 
     // The following 'if' statement is currently coupled to the single
     // API endpoint above. If the data prep is different for each endpoint,

@@ -1,16 +1,9 @@
 const { Stack } = require("aws-cdk-lib");
-const { SendEmailAlertWorkflow } = require("../construct/workflow/send-email-alert-workflow");
-const { ScrapeWebsiteWorkflow } = require("../construct/workflow/scrape-website-workflow/scrape-website-workflow");
-const { GetLatestPriceWorkflow } = require("../construct/workflow/get-latest-price-workflow");
+const { SendEmailAlertWorkflow } = require("../service/email/workflow/send-email-alert-workflow");
+const { ScrapeWebsiteWorkflow } = require("../service/web-scraper/workflow/scrape-website-workflow");
+const { GetLatestPriceWorkflow } = require("../service/price/workflow/get-latest-price-workflow");
+const { SubscribeToEmailAlertWorkflow } = require("../service/email/workflow/subscribe-to-email-alert-workflow");
 
-// const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
-// const { Runtime } = require("aws-cdk-lib/aws-lambda");
-// const { Duration } = require("aws-cdk-lib");
-// const { PolicyStatement, Effect } = require("aws-cdk-lib/aws-iam");
-// const { LambdaIntegration } = require("aws-cdk-lib/aws-apigateway");
-// const path = require("path");
-
-// const packageLockJsonFile = "../../../package-lock.json";
 
 class WorkflowStack extends Stack {
   constructor(scope, id, props) {
@@ -18,7 +11,12 @@ class WorkflowStack extends Stack {
 
     console.log("(+) Inside 'WorkflowStack'");
 
-    const { sns_Stack, tableArn, tableName } = props;
+    const {
+      sns_Stack,
+      emailTemplate_Stack,
+      tableArn,
+      tableName
+    } = props;
 
     this.scrapeWebsite_Workflow = new ScrapeWebsiteWorkflow(this, "ScrapeWebsite_Workflow", {
       tableArn,
@@ -26,14 +24,22 @@ class WorkflowStack extends Stack {
       outputEvent_Topic: sns_Stack.websiteUpdated_Topic,
     });
 
-    // this.SendEmailAlertWorkflow = new SendEmailAlertWorkflow(this, "SendEmailAlertWorkflow", {
-    //   triggerEvent_Topic: snsStack.websiteUpdated_Topic,
-    // });
+    this.SendEmailAlert_Workflow = new SendEmailAlertWorkflow(this, "SendEmailAlert_Workflow", {
+      tableArn,
+      tableName,
+      triggerEvent_Topic: sns_Stack.websiteUpdated_Topic,
+      emailTemplateName: emailTemplate_Stack.priceUpdateAlertTemplateName
+    });
 
-    // this.getLatestPriceWorkflow = new GetLatestPriceWorkflow(this, "GetLatestPriceWorkflow", {
-    //   tableArn,
-    //   tableName,
-    // });
+    this.getLatestPrice_Workflow = new GetLatestPriceWorkflow(this, "GetLatestPrice_Workflow", {
+      tableArn,
+      tableName,
+    });
+
+    this.subscribeToEmailAlert_Workflow = new SubscribeToEmailAlertWorkflow(this, "SubscribeToEmailAlert_Workflow", {
+      tableArn,
+      tableName,
+    });
   }
 }
 

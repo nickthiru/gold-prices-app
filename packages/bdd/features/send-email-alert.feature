@@ -10,12 +10,12 @@ Enables end users to be notified of price changes
 
         # Have an input box on frontend to sign up
 
-      When I sign up for email alerts
+      When I subscribe to email alerts
 
         # Save email to DDB Table so that
         # a Lambda can read from it and send out the email
 
-      Then I should receive a confirmation that I have signed up for email alerts
+      Then I should receive a confirmation that I have subscribed to email alerts
 
 
   # Story: Receive an email when prices change
