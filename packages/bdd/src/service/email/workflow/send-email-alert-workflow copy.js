@@ -29,22 +29,8 @@ exports.handler = async function sendEmailAlertWorkflow(event, context) {
 
   try {
     const data = {
-      priceData: [
-        {
-          siteName: "Live Chennai",
-          uiDateTime: "uiDateTime",
-          goldPrice: "3456",
-        },
-        {
-          siteName: "Bhima",
-          uiDateTime: "uiDateTime",
-          goldPrice: "3456",
-        }, {
-          siteName: "Thangamayil",
-          uiDateTime: "uiDateTime",
-          goldPrice: "3456",
-        },
-      ]
+      title: "Test Title",
+      name: "Nick"
     };
 
     const emailAlertSubscribers = await Db.query.emailAlertSubscribers(ddbClient, tableName);

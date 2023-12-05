@@ -6,9 +6,9 @@ module.exports = async function sendBulkEmail(sesClient, emailTemplateName, dest
   console.log("(+) emailTemplateName: " + emailTemplateName);
   console.log("(+) data: " + JSON.stringify(data, null, 2));
   console.log("(+) destinations: " + JSON.stringify(destinations, null, 2));
-  console.log("(+) destinations: " + destinations);
   console.log("(+) Array.isArray(destinations): " + Array.isArray(destinations));
   console.log("(+) typeof destinations[Symbol.iterator] === 'function': " + (typeof destinations[Symbol.iterator] === 'function'));
+
 
   try {
     const response = await sesClient.send(new SendBulkTemplatedEmailCommand({
