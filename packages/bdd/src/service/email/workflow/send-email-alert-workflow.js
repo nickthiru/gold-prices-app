@@ -28,24 +28,29 @@ exports.handler = async function sendEmailAlertWorkflow(event, context) {
 
 
   try {
-    const data = {
-      priceData: [
-        {
-          siteName: "Live Chennai",
-          uiDateTime: "uiDateTime",
-          goldPrice: "3456",
-        },
-        {
-          siteName: "Bhima",
-          uiDateTime: "uiDateTime",
-          goldPrice: "3456",
-        }, {
-          siteName: "Thangamayil",
-          uiDateTime: "uiDateTime",
-          goldPrice: "3456",
-        },
-      ]
-    };
+    // const data = {
+    //   priceData: [
+    //     {
+    //       siteName: "Live Chennai",
+    //       uiDateTime: "uiDateTime",
+    //       goldPrice: "3456",
+    //     },
+    //     {
+    //       siteName: "Bhima",
+    //       uiDateTime: "uiDateTime",
+    //       goldPrice: "3456",
+    //     }, {
+    //       siteName: "Thangamayil",
+    //       uiDateTime: "uiDateTime",
+    //       goldPrice: "3456",
+    //     },
+    //   ]
+    // };
+
+    const priceData = await Db.query.latestPrice(ddbClient, tableName);
+    console.log("(+) data: " + JSON.stringify(priceData, null, 2));
+
+    const data = { priceData };
 
     const emailAlertSubscribers = await Db.query.emailAlertSubscribers(ddbClient, tableName);
 

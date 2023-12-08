@@ -5,8 +5,8 @@ module.exports = async function latestPrice(ddbClient, tableName) {
   console.log("(+) Inside 'latestPrice()'");
   console.log("(+) tableName: " + tableName);
 
-  // const websites = ["Live Chennai", "Thangamayil", "Bhima"];
-  const siteNames = ["Live Chennai"];
+  const siteNames = ["Live Chennai", "Thangamayil", "Bhima"];
+  // const siteNames = ["Live Chennai"];
 
 
   try {

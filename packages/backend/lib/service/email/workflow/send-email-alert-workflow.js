@@ -15,22 +15,22 @@ const packageLockJsonFilePath = "../../../../../../package-lock.json";
 const workflowHandlerPath = "../../../../../bdd/src/service/email/workflow/send-email-alert-workflow.js";
 
 
-const domainWorkflow = {
-  domain: "EmailService",
-  workflow: {
-    name: "SendEmailAlertWorkflow",
-    description: ""
-  },
-  triggerEvent: {
-    type: "SNS",
-    topicName: "WebsiteUpdated",
-    description: "",
-  },
-  outputEvent: {
-    name: "EmailAlertSent",
-    description: "",
-  }
-};
+// const domainWorkflow = {
+//   domain: "EmailService",
+//   workflow: {
+//     name: "SendEmailAlertWorkflow",
+//     description: ""
+//   },
+//   triggerEvent: {
+//     type: "SNS",
+//     topicName: "WebsiteUpdated",
+//     description: "",
+//   },
+//   outputEvent: {
+//     name: "EmailAlertSent",
+//     description: "",
+//   }
+// };
 
 
 class SendEmailAlertWorkflow extends Construct {
