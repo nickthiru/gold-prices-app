@@ -6,7 +6,7 @@ import useFormatDateTime from "./hook/useFormatDateTime";
 
 import Container from "./component/ui/kit/Container";
 
-import { BackendStackApiStack96B9424F as BackendApi } from "../../backend/outputs.json";
+import { BackendStackRestApiStackF34EC5AD as BackendApi } from "../../backend/outputs.json";
 import Header from "./component/ui/header/Header";
 
 // const H1 = styled.h1`
@@ -37,8 +37,8 @@ export default function App() {
   const { get, loading } = useFetch(BackendApi.RestApiEndpoint0551178A);
 
   const { data, error, status, fetchStatus } = useQuery({
-    queryKey: ["prices"],
-    queryFn: () => get("/prices"),
+    queryKey: ["latestPrices"],
+    queryFn: () => get("/price/latest"),
     retry: 2,
     staleTime: 900000,
     refetchInterval: 900000,
