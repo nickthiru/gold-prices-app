@@ -12,13 +12,13 @@ const packageLockJsonFile = "../../../../../../package-lock.json";
 class GetLatestPriceWorkflow extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
-
-    console.log("(+) Inside GetLatestPriceWorkflow");
+    console.log("(+) Inside 'GetLatestPriceWorkflow' construct");
 
     const { tableArn, tableName } = props;
+    console.log("(+) tableArn: " + tableArn);
+    console.log("(+) tableName: " + tableName);
 
-
-    /* AWS API Gateway */
+    /* API */
 
     const lambda = new NodejsFunction(this, "Lambda", {
       bundling: {
@@ -41,11 +41,6 @@ class GetLatestPriceWorkflow extends Construct {
       resources: [tableArn],
       actions: [
         "dynamodb:Query",
-        // "dynamodb:PutItem",
-        // "dynamodb:Scan",
-        // "dynamodb:GetItem",
-        // "dynamodb:UpdateItem",
-        // "dynamodb:DeleteItem"
       ]
     }));
 

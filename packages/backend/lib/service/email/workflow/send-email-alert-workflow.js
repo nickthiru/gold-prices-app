@@ -36,7 +36,6 @@ const workflowHandlerPath = "../../../../../bdd/src/service/email/workflow/send-
 class SendEmailAlertWorkflow extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
-
     console.log("(+) Inside 'SendEmailAlertWorkflow' construct");
 
     const {
@@ -45,7 +44,6 @@ class SendEmailAlertWorkflow extends Construct {
       tableArn,
       tableName
     } = props;
-
     console.log("(+) tableArn: " + tableArn);
     console.log("(+) tableName: " + tableName);
     console.log("(+) triggerEvent_Topic: \n" + triggerEvent_Topic);

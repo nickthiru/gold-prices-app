@@ -11,7 +11,6 @@ const priceUpdateAlert_Template = require("../../../bdd/src/service/email/email-
 class EmailTemplateStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
-
     console.log("(+) Inside 'EmailTemplateStack'");
     console.log("(+) priceUpdateAlert_Template: \n" + JSON.stringify(priceUpdateAlert_Template, null, 2));
 

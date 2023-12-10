@@ -9,11 +9,12 @@ const { join } = require("path");
 class WebsiteHostingStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
+    console.log("(+) Inside 'WebsiteHostingStack'");
 
-    const uiDir = join(__dirname, "../../frontend/dist");
+    const uiDir = join(__dirname, "../../../frontend/dist");
 
     if (!existsSync(uiDir)) {
-      console.warn("UI dir not found: " + uiDir);
+      console.warn("UI directory not found: " + uiDir);
       return;
     }
 
@@ -32,9 +33,14 @@ class WebsiteHostingStack extends Stack {
       defaultBehavior: {
         origin: new S3Origin(bucket, {
           originAccessIdentity: originIdentity
-        })
-      }
+        }),
+      },
     });
+
+
+
+
+    /*** Outputs ***/
 
     new CfnOutput(this, "url", {
       value: distribution.distributionDomainName,

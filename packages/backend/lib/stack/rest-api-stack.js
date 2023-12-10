@@ -4,8 +4,12 @@ const { RestApi, Deployment, Stage, Cors } = require("aws-cdk-lib/aws-apigateway
 class RestApiStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
+    console.log("(+) Inside 'RestApiStack'");
 
     const { workflow_Stack } = props;
+
+
+    /*** API ***/
 
     const restApi = new RestApi(this, "RestApi");
 
@@ -16,17 +20,17 @@ class RestApiStack extends Stack {
       }
     };
 
-    const deployment = new Deployment(this, "Deployment", {
-      api: restApi,
-    })
+    // const deployment = new Deployment(this, "Deployment", {
+    //   api: restApi,
+    // });
 
 
-    /*** Stages ***/
+    // Stages
 
-    const devStage = new Stage(this, "dev", {
-      deployment: deployment,
-      stageName: "dev",
-    })
+    // const devStage = new Stage(this, "dev", {
+    //   deployment: deployment,
+    //   stageName: "dev",
+    // });
 
 
     /*** Price Service */
@@ -45,12 +49,13 @@ class RestApiStack extends Stack {
     // Email alert
     const alert = email.addResource("alert", optionsWithCors);
 
-    // Subscribe
+    // Subscribe to email alert
     alert.addMethod("POST", workflow_Stack.subscribeToEmailAlert_Workflow.lambdaIntegration);
 
 
 
 
+    /*** Outputs ***/
 
     // new CfnOutput(this, "", {
     //   value: ``,

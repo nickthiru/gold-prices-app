@@ -8,7 +8,6 @@ const { SubscribeToEmailAlertWorkflow } = require("../service/email/workflow/sub
 class WorkflowStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
-
     console.log("(+) Inside 'WorkflowStack'");
 
     const {
@@ -17,6 +16,9 @@ class WorkflowStack extends Stack {
       tableArn,
       tableName
     } = props;
+
+
+    /*** Backend ***/
 
     this.scrapeWebsite_Workflow = new ScrapeWebsiteWorkflow(this, "ScrapeWebsite_Workflow", {
       tableArn,
@@ -30,6 +32,9 @@ class WorkflowStack extends Stack {
       triggerEvent_Topic: sns_Stack.websiteUpdated_Topic,
       emailTemplateName: emailTemplate_Stack.priceUpdateAlertTemplateName
     });
+
+
+    /*** Frontend ***/
 
     this.getLatestPrice_Workflow = new GetLatestPriceWorkflow(this, "GetLatestPrice_Workflow", {
       tableArn,

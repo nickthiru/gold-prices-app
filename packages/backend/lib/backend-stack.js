@@ -33,7 +33,7 @@ class BackendStack extends Stack {
       workflow_Stack: workflow_Stack,
     });
 
-    // new WebsiteHostingStack(this, "WebsiteHosting_Stack");
+    new WebsiteHostingStack(this, "WebsiteHosting_Stack");
   }
 }
 

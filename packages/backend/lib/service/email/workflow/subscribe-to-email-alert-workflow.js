@@ -12,11 +12,11 @@ const packageLockJsonFile = "../../../../../../package-lock.json";
 class SubscribeToEmailAlertWorkflow extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
-
     console.log("(+) Inside SubscribeToEmailAlertWorkflow");
 
     const { tableArn, tableName } = props;
-
+    console.log("(+) tableArn: " + tableArn);
+    console.log("(+) tableName: " + tableName);
 
     /* AWS API Gateway */
 
@@ -41,11 +41,6 @@ class SubscribeToEmailAlertWorkflow extends Construct {
       resources: [tableArn],
       actions: [
         "dynamodb:PutItem",
-        // "dynamodb:Query",
-        // "dynamodb:Scan",
-        // "dynamodb:GetItem",
-        // "dynamodb:UpdateItem",
-        // "dynamodb:DeleteItem"
       ]
     }));
 

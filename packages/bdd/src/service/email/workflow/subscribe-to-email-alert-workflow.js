@@ -15,17 +15,10 @@ exports.handler = async function subscribeToEmailAlertWorkflow(event, context) {
   const tableName = process.env.TABLE_NAME;
   console.log("tableName: " + tableName);
 
-  // Read emailAddress from 'event'
   const requestBody = JSON.parse(event.body);
   console.log("(+) requestBody: \n" + JSON.stringify(requestBody, null, 2));
 
   const emailAddress = requestBody.emailAddress;
-
-  // const dataToSave = {
-  //   PK: `EMAIL_ALERT#${emailAddress}`,
-  //   SK: `EMAIL_ALERT#${emailAddress}`,
-  //   emailAddress: emailAddress
-  // };
 
   const dataToSave = {
     PK: "EMAIL_ALERT",

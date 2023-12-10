@@ -17,9 +17,9 @@ const workflowHandlerPath = "../../../../../bdd/src/service/web-scraper/workflow
 class ScrapeWebsiteRunner extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
+    console.log("(+) Inside 'ScrapeWebsiteRunner' construct");
 
     const { scrapeWebsiteAction_LambdaNames, outputEvent_Topic } = props;
-    console.log("(+) Inside 'ScrapeWebsiteRunner' construct");
     console.log("(+) scrapeWebsiteAction_LambdaNames: " + JSON.stringify(scrapeWebsiteAction_LambdaNames, null, 2));
 
     const lambda = new NodejsFunction(this, "Lambda", {
@@ -37,19 +37,19 @@ class ScrapeWebsiteRunner extends Construct {
         OUTPUT_EVENT_TOPIC_NAME: outputEvent_Topic.topicName,
         OUTPUT_EVENT_TOPIC_ARN: outputEvent_Topic.topicArn,
       },
-      initialPolicy: [
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          // resources: [
-          //   `arn:aws:sns:us-east-1:346761569124:function:${scrapeWebsiteAction_Lambda.functionName}`,
-          // ],
-          resources: [
-            "*",
-          ],
-          actions: ["lambda:InvokeFunction"],
-          // principals: ["arn:aws:sts::346761569124:assumed-role/*"],
-        }),
-      ],
+      // initialPolicy: [
+      //   new PolicyStatement({
+      //     effect: Effect.ALLOW,
+      //     // resources: [
+      //     //   `arn:aws:sns:us-east-1:346761569124:function:${scrapeWebsiteAction_Lambda.functionName}`,
+      //     // ],
+      //     resources: [
+      //       "*",
+      //     ],
+      //     actions: ["lambda:InvokeFunction"],
+      //     // principals: ["arn:aws:sts::346761569124:assumed-role/*"],
+      //   }),
+      // ],
     });
 
     // lambda.addToRolePolicy(new PolicyStatement({
@@ -63,9 +63,18 @@ class ScrapeWebsiteRunner extends Construct {
 
     lambda.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
+      resources: [
+        "*",
+      ],
+      actions: ["lambda:InvokeFunction"],
+    }),);
+
+    lambda.addToRolePolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
       resources: [`arn:aws:sns:us-east-1:346761569124:${outputEvent_Topic.topicName}`],
       actions: ["sns:Publish"],
     }));
+
 
     // new EventbridgeToLambda(this, "EventbridgeToLambda", {
     //   existingLambdaObj: lambda,

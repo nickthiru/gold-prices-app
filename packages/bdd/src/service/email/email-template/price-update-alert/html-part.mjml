@@ -20,39 +20,3 @@
     </mj-section>
   </mj-body>
 </mjml>
-
-<!-- <table>
-  <tbody>
-    <tr>
-      <th>Website</th>
-      <th>22K Price &#40;INR&#41;</th>
-      <th>Last Updated &#40;IST&#41;</th>
-    </tr>
-    {data ? data.map((obj, index) => { return (
-    <tr key="{index}">
-      <td>{obj.siteName}</td>
-      <td>{obj.goldPrice}</td>
-      <td>{format(obj.uiDateTime)}</td>
-    </tr>
-    ); }) : null}
-  </tbody>
-</table> -->
-
-<!-- // const data = {
-//   priceData: [
-//     {
-//       siteName: "Live Chennai",
-//       uiDateTime: "uiDateTime",
-//       goldPrice: 3456,
-//     },
-//     {
-//       siteName: "Bhima",
-//       uiDateTime: "uiDateTime",
-//       goldPrice: 3456,
-//     }, {
-//       siteName: "Thangamayil",
-//       uiDateTime: "uiDateTime",
-//       goldPrice: 3456,
-//     },
-//   ]
-// } -->

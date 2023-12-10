@@ -13,7 +13,6 @@ const packageLockJsonFilePath = "../../../../../../package-lock.json";
 class ScrapeWebsiteAction extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
-
     console.log("(+) Inside 'ScrapeWebsiteAction' construct");
 
     const { siteName, tableArn, tableName } = props;

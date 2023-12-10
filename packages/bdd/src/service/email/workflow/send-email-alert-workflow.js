@@ -15,6 +15,26 @@ const sesClient = new SESClient(sesConfig);
 const ddbClient = new DynamoDBClient();
 
 
+// const data = {
+//   priceData: [
+//     {
+//       siteName: "Live Chennai",
+//       uiDateTime: "uiDateTime",
+//       goldPrice: "1234",
+//     },
+//     {
+//       siteName: "Bhima",
+//       uiDateTime: "uiDateTime",
+//       goldPrice: "1234",
+//     }, {
+//       siteName: "Thangamayil",
+//       uiDateTime: "uiDateTime",
+//       goldPrice: "1234",
+//     },
+//   ]
+// };
+
+
 exports.handler = async function sendEmailAlertWorkflow(event, context) {
   console.log("Inside 'send-email-alert-workflow' handler");
   console.log("event: \n" + JSON.stringify(event, null, 2));
@@ -28,25 +48,6 @@ exports.handler = async function sendEmailAlertWorkflow(event, context) {
 
 
   try {
-    // const data = {
-    //   priceData: [
-    //     {
-    //       siteName: "Live Chennai",
-    //       uiDateTime: "uiDateTime",
-    //       goldPrice: "3456",
-    //     },
-    //     {
-    //       siteName: "Bhima",
-    //       uiDateTime: "uiDateTime",
-    //       goldPrice: "3456",
-    //     }, {
-    //       siteName: "Thangamayil",
-    //       uiDateTime: "uiDateTime",
-    //       goldPrice: "3456",
-    //     },
-    //   ]
-    // };
-
     const priceData = await Db.query.latestPrice(ddbClient, tableName);
     console.log("(+) data: " + JSON.stringify(priceData, null, 2));
 
