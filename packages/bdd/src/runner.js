@@ -1,5 +1,5 @@
-const { handler } = require("./service/price/workflow/get-latest-price-workflow/js");
-"./service/price/workflow/get-latest-price-workflow.js"
+const { handler } = require("./service/price/workflow/get-latest-price-workflow.js");
+
 
 const main = async () => {
   // const res = await handler({});

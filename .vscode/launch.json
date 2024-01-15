@@ -10,7 +10,8 @@
       "name": "Local Debug",
       "args": ["${relativeFile}"],
       "env": {
-        "AWS_REGION": "us-east-1"
+        "AWS_REGION": "us-east-1",
+        "TABLE_NAME": "BackendStackDataStack51999D86-AppTable6140480E-NR8C2LYSAH86"
       }
     }
   ]
